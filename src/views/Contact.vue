@@ -244,6 +244,8 @@ export default {
     sendMessage() {
       // 顯示訊息
       this.$alertState(true, 'Submit for');
+      // 清除表單
+      this.$refs.form.resetForm();
     },
   },
   mounted() {

@@ -180,9 +180,12 @@ export default {
         this.modalTitle = state;
       } else if (state === 'CREATE') {
         this.$refs.couponModal.openModal();
-        // push 空資料
-        this.couponData = {};
+        // push 空資料 is_enabled 預設 false
+        this.couponData = {
+          is_enabled: 0,
+        };
         this.modalTitle = state;
+        console.log('外層 couponData', this.couponData);
       }
     },
     delCoupon() {
@@ -235,7 +238,6 @@ export default {
       // 建立
       let url;
       let method;
-      this.isSpinner = true;
 
       // 編輯
       if (modalTitle === 'EDIT') {
@@ -246,21 +248,29 @@ export default {
         method = 'post';
       }
 
-      this.$http[method](url, {
-        data: item,
+      this.$refs.couponModal.$refs.form.validate().then((success) => {
+        if (success.valid) {
+          this.isSpinner = true;
+          this.$http[method](url, {
+            data: item,
+          })
+            .then((res) => {
+              if (res.data.success) {
+                // 顯示訊息
+                this.$alertState(res.data.success, 'Update this coupon');
+                this.getCoupons();
+                this.$refs.couponModal.closeModal();
+              } else {
+                // 顯示訊息
+                this.$alertState(res.data.success, 'Update this coupon');
+              }
+              this.isSpinner = false;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       })
-        .then((res) => {
-          if (res.data.success) {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Update this coupon');
-            this.getCoupons();
-            this.$refs.couponModal.closeModal();
-          } else {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Update this coupon');
-          }
-          this.isSpinner = false;
-        })
         .catch((error) => {
           console.log(error);
         });

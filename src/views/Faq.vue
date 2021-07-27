@@ -8,139 +8,28 @@
         >
           <h2 class="title mb-7">FAQ</h2>
           <div class="accordion w-100 mb-9" id="selector">
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="headingOne">
+            <div class="accordion-item" v-for="(item, index) in articlesData" :key="item.id">
+              <h3 class="accordion-header" :id="item.id">
                 <button
                   class="accordion-button collapsed fs-5 fs-md-4"
                   type="button"
                   data-bs-toggle="collapse"
-                  data-bs-target="#collapseOne"
+                  :data-bs-target="`#collapse${index}`"
                   aria-expanded="false"
-                  aria-controls="collapseOne"
+                  :aria-controls="`collapse${index}`"
                   data-cursor="cursor"
                 >
-                  How to confirm that the order has been completed
+                  {{ item.title }}
                 </button>
               </h3>
               <div
-                id="collapseOne"
-                class="accordion-collapse collapse show"
-                aria-labelledby="headingOne"
+                :id="`collapse${index}`"
+                data-bs-parent="#selector"
+                class="accordion-collapse collapse"
+                :aria-labelledby="item.id"
               >
-                <div class="accordion-body fs-5 fs-md-4">
-                  After the order is completed, the webpage will display the
-                  "order number" of your order and send the details of the order
-                  to your email address for this order.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="headingTwo">
-                <button
-                  class="accordion-button collapsed fs-5 fs-md-4"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseTwo"
-                  aria-expanded="true"
-                  aria-controls="collapseTwo"
-                  data-cursor="cursor"
-                >
-                  When Can I get my product after the order?
-                </button>
-              </h3>
-              <div
-                id="collapseTwo"
-                class="accordion-collapse collapse show"
-                aria-labelledby="headingTwo"
-              >
-                <ul class="accordion-body fs-5 fs-md-4 list-disc ms-5">
-                  <li>
-                    Orders are processed 1-2 business days after an order has
-                    been placed, Monday – Friday, excluding weekends, public and
-                    bank holidays and scheduled warehouse closures.
-                  </li>
-                  <li>
-                    Orders placed during holidays will be processed on the
-                    following business day.
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="headingThree">
-                <button
-                  class="accordion-button collapsed fs-5 fs-md-4"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseThree"
-                  aria-expanded="false"
-                  aria-controls="collapseThree"
-                  data-cursor="cursor"
-                >
-                  How to check my order status?
-                </button>
-              </h3>
-              <div
-                id="collapseThree"
-                class="accordion-collapse collapse show"
-                aria-labelledby="headingThree"
-              >
-                <div class="accordion-body fs-5 fs-md-4">
-                  To check your order status:<br />
-                  Log into your account via Under My Orders<br />
-                  Select “View Your Order History”
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="headingFour">
-                <button
-                  class="accordion-button collapsed fs-5 fs-md-4"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseFour"
-                  aria-expanded="false"
-                  aria-controls="collapseFour"
-                  data-cursor="cursor"
-                >
-                  Do you deliver internationally?
-                </button>
-              </h3>
-              <div
-                id="collapseFour"
-                class="accordion-collapse collapse show"
-                aria-labelledby="headingFour"
-              >
-                <div class="accordion-body fs-5 fs-md-4">
-                  We regularly deliver to different countries using safe and
-                  reliable couriers. For international shipping it is always
-                  best to send rolled posters in special protective tubes.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="headingFive">
-                <button
-                  class="accordion-button collapsed fs-5 fs-md-4"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseFive"
-                  aria-expanded="false"
-                  aria-controls="collapseFive"
-                  data-cursor="cursor"
-                >
-                  Can I sell my poster to you?
-                </button>
-              </h3>
-              <div
-                id="collapseFive"
-                class="accordion-collapse collapse show"
-                aria-labelledby="headingFive"
-              >
-                <div class="accordion-body fs-5 fs-md-4">
-                  Yes, we are always willing to look at any good quality film
-                  poster and establish a price. Just give us a call or email us
-                  a photo of your poster.
+                <div class="accordion-body text-break fs-5 fs-md-4"
+                v-html="item.content">
                 </div>
               </div>
             </div>
@@ -160,9 +49,58 @@ export default {
   data() {
     return {
       collapse: '',
+      articlesData: [],
     };
   },
   emits: ['toggleHide'],
+  methods: {
+    getArticles(page = 1) {
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/articles?page=${page}`;
+      this.$http
+        .get(url)
+        .then((res) => {
+          if (res.data.success) {
+            // 過濾 tag 為 FAQ
+            this.articlesData = res.data.articles.filter((item) => item.tag.includes('FAQ'));
+            // 時間排序
+            this.articlesData.sort((a, b) => b.create_at - a.create_at);
+            this.articlesData.forEach((item, index) => {
+              this.getArticle(item, index);
+            });
+          } else {
+            // 顯示訊息
+            this.$alertState(res.data.success, 'Get articles');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getArticle(item, index) {
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/article/${item.id}`;
+      this.$http
+        .get(url)
+        .then((res) => {
+          if (res.data.success) {
+            this.articlesData[index].content = res.data.article.content;
+            // content 的 ul 標籤加上 .list-disc、.ms-5
+            const contentList = document.querySelector('.accordion-body ul');
+            if (contentList) {
+              contentList.classList.add('list-disc');
+              contentList.classList.add('ms-5');
+            }
+          } else {
+          // 顯示訊息
+            this.$alertState(res.data.success, 'Get article');
+          }
+          // 隱藏 loading
+          emitter.emit('isLoading', this.isLoading = false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
   mounted() {
     // 顯示 loading
     emitter.emit('isLoading', (this.isLoading = true));
@@ -180,9 +118,12 @@ export default {
     );
     this.collapse = collapseElementList.map(
       (collapseEl) => new Collapse(collapseEl, {
-        parent: document.getElementById('selector'),
+        // parent: document.getElementById('selector'),
+        // parent: true,
       }),
     );
+    // 取得文章列表
+    this.getArticles();
   },
 };
 </script>

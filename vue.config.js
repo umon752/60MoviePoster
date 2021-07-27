@@ -26,5 +26,5 @@ module.exports = {
     });
   },
 
-  publicPath: '/60MoviePoster/dist/',
+  publicPath: '/60MoviePoster/',
 };

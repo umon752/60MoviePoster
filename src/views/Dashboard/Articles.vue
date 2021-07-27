@@ -11,9 +11,10 @@
       @click.prevent="openModal('CREATE')"
     >
       <span class="material-icons fs-4 me-2"> add </span>
-      CREATE PRODUCT
+      CREATE ARTICLE
     </button>
   </div>
+
   <!-- empty state -->
   <section
     class="
@@ -22,10 +23,11 @@
       d-flex
       justify-content-center
       align-items-center
+      h-100
     "
-    v-if="productsData.length === 0"
+    v-if="articlesData.length === 0"
   >
-    <h3 class="fs-2 fw-bold opacity-50">Create a product.</h3>
+    <h3 class="fs-2 fw-bold opacity-50">Create an article.</h3>
   </section>
 
   <!-- full state -->
@@ -33,31 +35,31 @@
     <table class="table text-nowrap mb-8">
       <thead class="bg-black-opacity-50 border-top">
         <tr>
-          <th scope="col" class="border-bottom py-5">CATEGORY</th>
-          <th scope="col" class="border-bottom py-5">TITLE</th>
-          <th scope="col" class="border-bottom py-5">ORIGIN PRICE</th>
-          <th scope="col" class="border-bottom py-5">PRICE</th>
-          <th scope="col" class="border-bottom py-5">IS ENABLED</th>
-          <th scope="col" class="border-bottom text-center py-5">EDIT</th>
+          <th scope="col" class="border-bottom">TITLE</th>
+          <th scope="col" class="border-bottom">AUTHOR</th>
+          <th scope="col" class="border-bottom">DESCRIPTION</th>
+          <th scope="col" class="border-bottom">CREATE DATE</th>
+          <th scope="col" class="border-bottom">IS PUBLIC</th>
+          <th scope="col" class="border-bottom">EDIT</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in productsData" :key="item.id">
-          <td>{{ item.category }}</td>
+        <tr v-for="item in articlesData" :key="item.id">
           <td>{{ item.title }}</td>
-          <td>NT$ {{ $filters.thousands(item.origin_price) }}</td>
-          <td>NT$ {{ $filters.thousands(item.price) }}</td>
+          <td>{{ item.author }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ $filters.date(item.create_at) }}</td>
           <td>
-            <div class="form-check form-switch" v-if="item.is_enabled">
+            <div class="form-check form-switch" v-if="item.isPublic">
               <input
                 class="form-check-input"
                 type="checkbox"
                 :id="item.id"
                 checked
-                @click="updateEnabledState(item)"
+                @click="updatePublicState(item)"
               />
               <label class="form-check-label text-primary" :for="item.id"
-                >ENABLED</label
+                >PUBLIC</label
               >
             </div>
             <div class="form-check form-switch" v-else>
@@ -65,14 +67,14 @@
                 class="form-check-input"
                 type="checkbox"
                 :id="item.id"
-                @click="updateEnabledState(item)"
+                @click="updatePublicState(item)"
               />
               <label class="form-check-label opacity-50" :for="item.id"
-                >DISABLE</label
+                >PRIVATE</label
               >
             </div>
           </td>
-          <td class="text-center">
+          <td>
             <a
               href="#"
               class="icon-btn link d-inline-flex me-4"
@@ -94,25 +96,25 @@
   </div>
 
   <!-- pagination -->
-  <div class="d-flex justify-content-end" v-if="productsData.length !== 0">
-    <Pagination :page="pagination" @getData="getProducts" />
+  <div class="d-flex justify-content-end" v-if="articlesData.length !== 0">
+    <Pagination :page="pagination" @getData="getArticles" />
   </div>
 
-  <!-- product modal -->
-  <ProductModal
-    ref="productModal"
+  <!-- article modal -->
+  <ArticleModal
+    ref="articleModal"
     :modalTitle="modalTitle"
-    :productData="productData"
-    @updateProduct="updateProduct"
+    :articleData="articleData"
+    @updateArticle="updateArticle"
     :isSpinner="isSpinner"
   />
 
   <!-- delete modal -->
   <DeleteModal
     ref="delModal"
-    :data="productData"
+    :data="articleData"
     :modalTitle="modalTitle"
-    @delData="delProduct"
+    @delData="delArticle"
     :isSpinner="isSpinner"
   />
 </template>
@@ -120,14 +122,14 @@
 <script>
 import emitter from '@/methods/mitt';
 import Pagination from '@/components/Pagination.vue';
-import ProductModal from '@/components/Backed/ProductModal.vue';
+import ArticleModal from '@/components/Backed/ArticleModal.vue';
 import DeleteModal from '@/components/Backed/DeleteModal.vue';
 
 export default {
   data() {
     return {
-      productsData: [],
-      productData: {},
+      articlesData: [],
+      articleData: {},
       modalTitle: '',
       pagination: {},
       isSpinner: false,
@@ -136,8 +138,8 @@ export default {
   inject: ['emitter', '$alertState'],
   emits: ['emptyState'],
   watch: {
-    productsData() {
-      if (this.productsData.length === 0) {
+    articlesData() {
+      if (this.articlesData.length === 0) {
         this.$emit('emptyState', true);
       } else {
         this.$emit('emptyState', false);
@@ -145,17 +147,38 @@ export default {
     },
   },
   methods: {
-    getProducts(page = 1) {
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products?page=${page}`;
+    getArticles(page = 1) {
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/articles?page=${page}`;
       this.$http
         .get(url)
         .then((res) => {
           if (res.data.success) {
-            this.productsData = res.data.products;
+            this.articlesData = res.data.articles;
             this.pagination = res.data.pagination;
           } else {
             // 顯示訊息
-            this.$alertState(res.data.success, 'Get products');
+            this.$alertState(res.data.success, 'Get articles');
+          }
+          // 隱藏 loading
+          emitter.emit('isLoading', this.isLoading = false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getArticle(item) {
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article/${item.id}`;
+      this.$http
+        .get(url)
+        .then((res) => {
+          if (res.data.success) {
+            this.articleData = res.data.article;
+            if (this.modalTitle === '') {
+              this.updateArticle(this.articleData);
+            }
+          } else {
+            // 顯示訊息
+            this.$alertState(res.data.success, 'Get article');
           }
           // 隱藏 loading
           emitter.emit('isLoading', this.isLoading = false);
@@ -167,52 +190,41 @@ export default {
     openModal(state, item) {
       if (state === 'DELETE') {
         this.$refs.delModal.openModal();
-        this.productData = {
+        this.articleData = {
           ...item,
         };
-        this.modalTitle = 'PRODUCT';
+        this.modalTitle = 'ARICLE';
       } else if (state === 'EDIT') {
-        this.$refs.productModal.openModal();
-        // push 該產品資料
-        this.productData = JSON.parse(JSON.stringify(item));
+        this.$refs.articleModal.openModal();
+        this.getArticle(item);
         this.modalTitle = state;
       } else if (state === 'CREATE') {
-        this.$refs.productModal.openModal();
+        this.$refs.articleModal.openModal();
         // push 空資料
-        this.productData = {
+        this.articleData = {
           title: '',
-          category: '',
-          imageUrl: '',
-          imagesUrl: [
-            '', '', '',
-          ],
-          unit: 'Sheet',
-          origin_price: null,
-          price: null,
-          year: null,
-          country: '',
-          type: 'Unfolded Original One Sheet',
-          size: '61 × 91.5 cm',
+          author: '',
           description: '',
-          content: 'Shipping NT$100. Free shipping for order greater than NT$6,000.<br>\nOrders are processed 1-2 business days after an order has been placed, Monday – Friday, excluding weekends, public and bank holidays and scheduled warehouse closures.',
-          inStock: null,
+          content: '',
+          tag: [''],
+          isPublic: false,
         };
         this.modalTitle = state;
       }
     },
-    delProduct() {
+    delArticle() {
       this.isSpinner = true;
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${this.productData.id}`;
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article/${this.articleData.id}`;
       this.$http
         .delete(url)
         .then((res) => {
           if (res.data.success) {
             // 顯示訊息
-            this.$alertState(res.data.success, 'Delete this product');
-            this.getProducts();
+            this.$alertState(res.data.success, 'Delete this article');
+            this.getArticles();
           } else {
             // 顯示訊息
-            this.$alertState(res.data.success, 'Delete this product');
+            this.$alertState(res.data.success, 'Delete this article');
           }
           this.isSpinner = false;
           this.$refs.delModal.closeModal();
@@ -221,43 +233,30 @@ export default {
           console.log(error);
         });
     },
-    updateEnabledState(item) {
-      if (item.is_enabled) {
-        item.is_enabled = 0;
-      } else {
-        item.is_enabled = 1;
-      }
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
+    updatePublicState(item) {
+      this.modalTitle = '';
+      this.getArticle(item);
 
-      this.$http.put(url, {
-        data: item,
-      })
-        .then((res) => {
-          if (res.data.success) {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Update enabled state');
-            this.getProducts();
-          } else {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Update enabled state');
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (item.isPublic) {
+        item.isPublic = false;
+      } else {
+        item.isPublic = true;
+      }
     },
-    updateProduct(item, modalTitle) {
+    updateArticle(item, modalTitle = '') {
+      // 將 tag 內的空值移除
+      item.tag = item.tag.filter((value) => value !== '');
       // 建立
       let url;
       let method;
       this.isSpinner = true;
 
       // 編輯
-      if (modalTitle === 'EDIT') {
-        url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
+      if (modalTitle === 'EDIT' || modalTitle === '') {
+        url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article/${item.id}`;
         method = 'put';
       } else if (modalTitle === 'CREATE') {
-        url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product`;
+        url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article`;
         method = 'post';
       }
 
@@ -267,12 +266,12 @@ export default {
         .then((res) => {
           if (res.data.success) {
             // 顯示訊息
-            this.$alertState(res.data.success, 'Update this product');
-            this.getProducts();
-            this.$refs.productModal.closeModal();
+            this.$alertState(res.data.success, 'Update this article');
+            this.getArticles();
+            this.$refs.articleModal.closeModal();
           } else {
             // 顯示訊息
-            this.$alertState(res.data.success, 'Update this product');
+            this.$alertState(res.data.success, 'Update this article');
           }
           this.isSpinner = false;
         })
@@ -284,14 +283,13 @@ export default {
   mounted() {
     // 顯示 loading
     emitter.emit('isLoading', this.isLoading = true);
-    // 取得產品資料
-    this.getProducts();
+    this.getArticles();
     // Firefox Material-icons 置中
     emitter.emit('firefoxIcon');
   },
   components: {
     Pagination,
-    ProductModal,
+    ArticleModal,
     DeleteModal,
   },
 };

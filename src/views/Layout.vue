@@ -319,8 +319,10 @@
                 href="#"
                 class="link-primary"
                 @click.prevent="addQty(item.qty, item)"
+                :class="{ disabled: item.qty >= item.product.inStock }"
               >
-                <span class="material-icons"> add </span>
+                <span class="material-icons"
+                :class="{ 'opacity-50': item.qty >= item.product.inStock }"> add </span>
               </a>
             </div>
             <p class="mb-1 mb-md-4">NT$ {{ $filters.thousands(item.total) }}</p>
@@ -388,6 +390,16 @@ export default {
     };
   },
   inject: ['emitter', '$alertState'],
+  // watch: {
+  //   qty() {
+  //     if (this.qty <= 1) {
+  //       this.qty = 1;
+  //     }
+  //     if (this.qty > this.productData.inStock) {
+  //       this.qty = this.productData.inStock;
+  //     }
+  //   },
+  // },
   methods: {
     openLoginModal() {
       this.$refs.loginModal.openModal();
@@ -456,6 +468,12 @@ export default {
     },
     updateCart(qty, item, index) {
       let num = qty;
+      if (num > item.product.inStock) {
+        num = item.product.inStock;
+        // 顯示訊息
+        this.$alertState(false, 'More than the maximum amount of inventory, enter');
+      }
+      item.product.inStock -= num;
       if (num <= 0) {
         num = 1; // 強制設為 1
         this.cartsData.carts[index].qty = 1;
@@ -508,6 +526,9 @@ export default {
     addQty(qty, item) {
       let num = qty;
       num += 1;
+      if (num > item.product.inStock) {
+        num = item.product.inStock;
+      }
       this.updateCart(num, item);
     },
     removeQty(qty, item) {

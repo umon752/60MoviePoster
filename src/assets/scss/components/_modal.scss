@@ -1,3 +1,20 @@
-.modalImg {
-    @include img-contain(100%, 220px, center);
+.productModal {
+
+    &__img {
+        @include img-contain(100%, 150px, center);
+
+        @include media-breakpoint-up(sm) {
+            height: 170px;
+        }
+    }
+
+    .mask-fill {
+        opacity: 0;
+        @include linear;
+    }
+
+    &:hover .mask-fill {
+        opacity: .5;
+        @include linear;
+    }
 }

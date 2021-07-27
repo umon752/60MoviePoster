@@ -61,7 +61,7 @@
           </select>
         </div>
         <ul class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-          <li class="mb-7" v-for="item in productsData" :key="item.id">
+          <li class="mb-7" v-for="(item, index) in productsData" :key="item.id">
             <router-link
               :to="`/product/${item.id}`"
               class="products d-block position-relative"
@@ -94,7 +94,7 @@
                       mb-1 mb-xl-2
                     "
                     v-if="favoritesData.includes(item.id)"
-                    @click.prevent="addFavorite(item)"
+                    @click.prevent="addFavorite(item, index)"
                   >
                     favorite
                   </a>
@@ -108,7 +108,7 @@
                       mb-1 mb-xl-2
                     "
                     v-else
-                    @click.prevent="addFavorite(item)"
+                    @click.prevent="addFavorite(item, index)"
                   >
                     favorite_border
                   </a>
@@ -125,7 +125,7 @@
                       fs-6
                       py-1
                     "
-                    @click.prevent="addCart(item.id, this.qty)"
+                    @click.prevent="addCart(item.id)"
                     :class="{ disabled: !item.inStock }"
                   >
                     <Spinner
@@ -213,7 +213,7 @@ export default {
       year: ['Default'],
       pagination: {},
       isSpinner: false,
-      qty: 1,
+      inStock: '',
     };
   },
   props: {
@@ -223,9 +223,25 @@ export default {
         return [];
       },
     },
+    cartsData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   inject: ['emitter', '$alertState'],
   emits: ['sidebarShow', 'getCartsData', 'toggleHide', 'addFavorite'],
+  computed: {
+    productRoute() {
+      return this.$route.query.category;
+    },
+  },
+  watch: {
+    productRoute(category) {
+      this.filterCategory(category);
+    },
+  },
   methods: {
     getAllProducts() {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
@@ -364,14 +380,14 @@ export default {
       this.year.sort((a, b) => a - b);
     },
     filterCategory(category) {
-      if (category !== 'All') {
+      if (category !== 'All' && category !== undefined) {
         this.pagination.category = category;
         this.pagination.year = null;
         this.pagination.search = null;
         this.$refs.select.value = 'Default';
         // 設定分類路由
         this.$router.push({ name: 'products', query: { category } });
-      } else {
+      } else if (category === 'All' || category === undefined) {
         this.pagination.category = null;
         this.pagination.year = null;
         this.pagination.search = null;
@@ -402,33 +418,45 @@ export default {
       this.filterPage();
     },
     addCart(id, qty = 1) {
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`;
-      // 顯示 spinner
-      this.isSpinner = id;
-      const product = {
-        data: {
-          product_id: id,
-          qty,
-        },
-      };
-      this.$http
-        .post(url, product)
-        .then((res) => {
-          if (res.data.success) {
+      // 當前商品庫存量
+      this.cartsData.carts.forEach((item) => {
+        if (item.product_id === id) {
+          this.inStock = item.product.inStock - item.qty;
+        }
+      });
+      // 購物車未超過庫存才可加入購物車
+      if (this.inStock !== 0) {
+        const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`;
+        // 顯示 spinner
+        this.isSpinner = id;
+        const product = {
+          data: {
+            product_id: id,
+            qty,
+          },
+        };
+        this.$http
+          .post(url, product)
+          .then((res) => {
+            if (res.data.success) {
             // 打開 cart
-            this.$emit('sidebarShow');
-            // 更新購物車資料
-            this.$emit('getCartsData');
-          } else {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Add to cart');
-          }
-          // 隱藏 spinner
-          this.isSpinner = false;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+              this.$emit('sidebarShow');
+              // 更新購物車資料
+              this.$emit('getCartsData');
+            } else {
+              // 顯示訊息
+              this.$alertState(res.data.success, 'Add to cart');
+            }
+            // 隱藏 spinner
+            this.isSpinner = false;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        // 顯示訊息
+        this.$alertState(false, 'More than the maximum amount of inventory, add to cart');
+      }
     },
     addFavorite(item) {
       this.$emit('addFavorite', item);

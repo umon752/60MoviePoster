@@ -60,6 +60,16 @@
               COUPONS
             </router-link>
           </li>
+          <li class="mb-4">
+            <router-link
+              to="/admin/articles"
+              class="link-primary d-flex align-items-center"
+              @click="changeTitle('ARTICLES'), toggle()"
+            >
+              <span class="material-icons me-2"> article </span>
+              ARTICLES
+            </router-link>
+          </li>
         </ul>
         <a
           href="#"

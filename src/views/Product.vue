@@ -104,18 +104,18 @@
             type="number"
             class="form-control text-center"
             v-model.number="qty"
-            :class="{ 'text-secondary': !this.productData.inStock }"
+            :class="[{ 'pointer-none': !this.inStock }, { 'text-secondary': !this.inStock }]"
           />
           <button
             class="btn border link opacity-80"
             type="button"
             @click="addQty"
-            :class="{ disabled: !this.productData.inStock }"
+            :class="{ disabled: this.qty >= this.inStock }"
           >
             <span
               class="material-icons"
               data-cursor="cursor"
-              :class="{ 'opacity-50': !this.productData.inStock }"
+              :class="{ 'opacity-50': this.qty >= this.inStock }"
             >
               add
             </span>
@@ -146,7 +146,7 @@
               fs-5
               w-100
             "
-            :class="{ disabled: !this.productData.inStock }"
+            :class="{ disabled: !this.inStock }"
             @click="addCart(this.productData.id, this.qty)"
           >
             <Spinner class="spinner my-2" v-if="isSpinner" />
@@ -215,8 +215,6 @@
       </div>
     </div>
     <!-- related products -->
-    <!-- :slidesPerView="5"
-        :slidesPerGroup="5" -->
     <section class="relatedProducts">
       <h3 class="dividerTitle text-center fs-2 opacity-50 fw-bold mb-5 mb-lg-7">
         RELATED PRODUCTS
@@ -242,7 +240,7 @@
             spaceBetween: 30,
           },
         }"
-        class="mySwiper mb-7 px-6"
+        class="mySwiper mb-7 px-5 py-2"
       >
         <swiper-slide
           v-for="item in relatedProductsData"
@@ -254,8 +252,33 @@
             <img
               :src="item.imageUrl"
               class="relatedProducts__item__img mb-2"
+              :class="{ 'opacity-50': !item.inStock }"
               data-cursor="cursor"
             />
+            <div
+                v-if="item.is_onSale"
+                class="
+                  position-absolute
+                  top-negative-5
+                  end-negative-5
+                  badge
+                  bg-primary
+                "
+              >
+                SALE
+              </div>
+              <div
+                v-if="!item.inStock"
+                class="
+                  position-absolute
+                  top-negative-5
+                  end-negative-5
+                  badge
+                  bg-secondary
+                "
+              >
+                SOLD OUT
+              </div>
             <h5
               class="
                 fs-4
@@ -297,6 +320,7 @@ export default {
       relatedProductsData: [],
       isSpinner: false,
       qty: 1,
+      inStock: '',
     };
   },
   computed: {
@@ -309,9 +333,24 @@ export default {
       if (this.qty <= 1) {
         this.qty = 1;
       }
+      if (this.qty > this.inStock && this.inStock !== 0) {
+        this.qty = this.inStock;
+        // 顯示訊息
+        this.$alertState(false, 'More than the maximum amount of inventory, enter');
+      }
     },
     productRouteId(value) {
       this.getProduct(value);
+      // 更新購物車資料
+      this.$emit('getCartsData');
+    },
+    cartsData() {
+      this.cartsData.carts.forEach((item) => {
+        // 購物車有此商品則庫存數以購物車為主
+        if (item.product_id === this.productRouteId) {
+          this.inStock = item.product.inStock - item.qty;
+        }
+      });
     },
   },
   props: {
@@ -319,6 +358,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    cartsData: {
+      type: Object,
+      default() {
+        return {};
       },
     },
   },
@@ -337,6 +382,12 @@ export default {
             // 關閉 cart
             this.$emit('sidebarHide');
             this.getAllProducts();
+            // 商品沒有在購物車內，庫存量以商品資料為主
+            const cart = this.cartsData.carts;
+            const isInclude = cart.every((item) => item.product_id !== this.productRouteId);
+            if (isInclude) {
+              this.inStock = this.productData.inStock;
+            }
           }
           // 隱藏 loading
           emitter.emit('isLoading', (this.isLoading = false));
@@ -410,7 +461,6 @@ export default {
         filterYears.forEach((value, index) => {
           FilteredCategories.forEach((item) => {
             if (value.id === item) {
-            // filterYears.push(value);
               filterYears.splice(index, 1);
             }
           });
@@ -436,6 +486,7 @@ export default {
       }
     },
     addCart(id, qty = 1) {
+      this.inStock -= qty;
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`;
       // 顯示 spinner
       this.isSpinner = true;
@@ -449,6 +500,8 @@ export default {
         .post(url, product)
         .then((res) => {
           if (res.data.success) {
+            // 更新 qty
+            this.qty = 1;
             // 打開 cart
             this.$emit('sidebarShow');
             // 更新購物車資料
@@ -465,7 +518,9 @@ export default {
         });
     },
     addQty() {
-      this.qty += 1;
+      if (this.qty < this.inStock) {
+        this.qty += 1;
+      }
     },
     removeQty() {
       if (this.qty > 1) {

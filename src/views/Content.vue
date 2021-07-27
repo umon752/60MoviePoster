@@ -83,7 +83,7 @@
     <ul class="row">
       <li class="col-md-4 mb-4 mb-md-0">
         <router-link
-          to="/product/-MdCU1BIGJn_7j28LrfL"
+          :to="`/product/${saleProductId}`"
           class="news overflow-hidden d-block"
           @click.prevent
         >
@@ -372,6 +372,7 @@ export default {
       productsData: [],
       couponModal: '',
       couponCode: '60MoviePoster',
+      saleProductId: '',
     };
   },
   inject: ['emitter', '$alertState'],
@@ -479,6 +480,7 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.filterRecommed(res.data.products);
+            this.filterSaleProduct(res.data.products);
           } else {
             // 顯示訊息
             this.$alertState(res.data.success, 'Get products');
@@ -515,6 +517,28 @@ export default {
 
       // 將折扣商品排序置前
       this.productsData.sort((a, b) => b.is_onSale - a.is_onSale);
+    },
+    filterSaleProduct(product) {
+      const saleProduct = product.filter((item) => item.is_onSale);
+      // 設定最多 1 個商品
+      const maxSize = 1;
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
+      const arrSet = new Set([]); // 新增一個類陣列
+
+      getRandomInt(); // 取得隨機數函式
+
+      // 得到 maxSize 個值就會停止
+      for (let index = 0; arrSet.size < maxSize; index + 1) {
+        const num = getRandomInt(saleProduct.length); // 取得隨機數並設定最大值
+        arrSet.add(num); // 取得隨機數存進陣列中
+      }
+
+      // 將取得的隨機數字帶入
+      arrSet.forEach((i) => {
+        this.saleProductId = saleProduct[i].id;
+      });
     },
     openCouponModal() {
       this.couponModal.show();

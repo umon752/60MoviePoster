@@ -61,16 +61,18 @@
                 </li>
                 <li class="border-bottom py-3">
                   <p class="fw-bold w-30 d-inline-block">PAID DATE</p>
-                  <span class="text-secondary">
+                  <span class="text-primary" v-if="tempOrder.paid_date">
                     {{ $filters.date(tempOrder.paid_date) }}</span>
+                    <span class="text-secondary" v-else>-</span>
                 </li>
                 <li class="border-bottom py-3">
                   <p class="fw-bold w-30 d-inline-block">PAYMENT STATUS</p>
                   <span
-                    class="text-secondary"
-                    :class="{ 'text-primary': tempOrder.is_paid }"
+                    class="text-primary" v-if="tempOrder.is_paid">
+                    Paid</span
                   >
-                    {{ tempOrder.is_paid ? "Paid" : "Not paid" }}</span
+                  <span class="text-secondary" v-else>
+                    Not paid</span
                   >
                 </li>
                 <li class="border-bottom py-3">
@@ -107,7 +109,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-primary px-5">
+          <button type="button" class="btn btn-sm btn-primary px-5"
+            data-bs-dismiss="modal">
             <Spinner v-if="isSpinner" />OK
           </button>
         </div>

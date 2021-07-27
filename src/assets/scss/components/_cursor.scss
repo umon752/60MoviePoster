@@ -32,7 +32,10 @@
     }
 }
 
-.cursor-prohibit {
-    // pointer-events: none;
-    cursor: not-allowed;
+.pointer-none {
+    pointer-events: none;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

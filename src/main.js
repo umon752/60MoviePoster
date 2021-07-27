@@ -6,6 +6,7 @@ import {
   Field, Form, ErrorMessage, defineRule, configure,
 } from 'vee-validate';
 import { required, email, min } from '@vee-validate/rules';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 import App from './App.vue';
 import router from './router';
@@ -31,6 +32,7 @@ app.config.globalProperties.$filters = {
 };
 app.use(router);
 app.use(VueAxios, axios);
+app.use(CKEditor);
 app.component('Form', Form);
 app.component('Field', Field);
 app.component('ErrorMessage', ErrorMessage);
