@@ -1,0 +1,15 @@
+.cartStep {
+    width: calc(100vw / 3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include media-breakpoint-up(md) {
+        width: 120px;
+    }
+
+    &.active {
+        background-color: $primary;
+        color: white;
+    }
+}

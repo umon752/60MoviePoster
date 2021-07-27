@@ -1,0 +1,15 @@
+.map {
+    height: 350px;
+
+    @include media-breakpoint-up(md) {
+        height: 450px;
+    }
+
+    @include media-breakpoint-up(lg) {
+        height: 550px;
+    }
+
+    @include media-breakpoint-up(xl) {
+        height: 450px;
+    }
+}

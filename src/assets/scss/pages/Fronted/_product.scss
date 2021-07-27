@@ -1,0 +1,72 @@
+.relatedProducts {
+
+    &__item {
+        cursor: pointer;
+        opacity: .8;
+        @include linear;
+
+        &:hover {
+            opacity: 1;
+            @include linear;
+        }
+    }
+
+    &__item__img {
+        @include img-cover(100%, 140px, center);
+
+            @include media-breakpoint-up(sm) {
+                height: 200px;
+            }
+
+            @include media-breakpoint-up(md) {
+                height: 150px;
+            }
+
+            @include media-breakpoint-up(lg) {
+                height: 220px;
+            }
+
+            @include media-breakpoint-up(xl) {
+                height: 250px;
+            }
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        width: 42px;
+        height: 42px;
+        background-color: $secondary-dark;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+
+        &:hover::after {
+            color: #c0c0c08c !important;
+        }
+    }
+
+    .swiper-button-prev {
+        left: 0;
+    }
+
+    .swiper-button-next {
+        right: 0;
+    }
+
+    .swiper-button-prev::after {
+        content: 'arrow_left';
+        font-family: "Material Icons";
+        color: $light;
+        font-size: 24px;
+        @include linear;
+    }
+
+    .swiper-button-next::after {
+        content: 'arrow_right';
+        font-family: "Material Icons";
+        color: $light;
+        font-size: 24px;
+        @include linear;
+    }
+}

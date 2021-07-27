@@ -1,0 +1,12 @@
+.adminContent {
+    width: 100%;
+    @include media-breakpoint-up(xl) {
+        width: calc(100vw - 340px);
+    }
+
+    .scrollbar {
+        @include media-breakpoint-up(xxl) {
+            overflow-x: hidden;
+        }
+    }
+}

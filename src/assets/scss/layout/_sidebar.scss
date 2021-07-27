@@ -1,0 +1,54 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1070;
+    background-color: black;
+    @include bg-material;
+    box-shadow: -6px 0px 6px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateX(100%);
+    @include linear;
+
+    @include media-breakpoint-up(md) {
+        width: 465px;
+    }
+
+    &.active {
+        opacity: .9;
+        transform: translateX(0);
+        @include linear;
+    }
+
+    &__inner {
+        height: calc(100% - 150px);
+        overflow-x: hidden;
+    }
+
+    &__product {
+
+        &__img {
+            @include img-cover(100%, 150px, center);
+
+            @include media-breakpoint-up(sm) {
+                height: 250px;
+            }
+    
+            @include media-breakpoint-up(md) {
+                height: 190px;
+            }
+        }
+    
+        .mask-fill {
+            opacity: 0;
+            @include linear;
+        }
+    
+        &:hover .mask-fill {
+            opacity: 1;
+            @include linear;
+        }
+    }
+}

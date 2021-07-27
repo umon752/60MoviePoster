@@ -1,0 +1,107 @@
+* {
+    scrollbar-width: none; // 針對 Firefox 設定
+
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    @include bg-material;
+    height: 100%;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    @include linear;
+    text-decoration: none;
+
+    &:hover {
+        @include linear;
+    }
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 0; // 消除 Bootstrap 預設 
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+p {
+    margin-bottom: 0; // 消除 Bootstrap 預設
+}
+
+.material-icons {
+    line-height: 1.5;
+}
+
+// 消除瀏覽器表單自動填充的默認樣式
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    background-color: transparent !important;
+    -webkit-text-fill-color: $light;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+// 移除上下箭頭樣式
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none; // Chrome, Safari, Edge, Opera
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield; // Firefox
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(50%);
+    cursor: pointer;
+    @include linear;
+
+    &:hover {
+        filter: invert(1) brightness(30%);
+        @include linear;
+    }
+}
+
+th,
+td {
+    vertical-align: middle;
+}
+
+textarea {
+    height: 180px;
+}

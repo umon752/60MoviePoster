@@ -1,0 +1,21 @@
+.link {
+    color: $light !important;
+    display: block;
+
+    &:hover {
+        color: #c0c0c08c !important;
+    }
+}
+
+.link-primary {
+    color: $light;
+    display: block;
+
+    &:hover {
+        color: $primary;
+    }
+
+    &:focus {
+        color: $light;
+    }
+}

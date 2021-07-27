@@ -1,0 +1,71 @@
+.loading {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background-color: $dark;
+    @include bg-material;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    @include linear;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+        @include linear;
+    }
+
+    &__img--6 {
+        transform: translateX(4px);
+        filter: drop-shadow(0 0 3px rgba(214, 214, 214, 0.3));
+    }
+
+    &__img--0 {
+        @include animation-rotate;
+        filter: drop-shadow(0 0 3px rgba(214, 214, 214, 0.3));
+    }
+
+    &__text {
+        text-shadow: 0 0 3px rgba(214, 214, 214, 0.5);
+    }
+}
+
+
+
+.loadingBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    @include linear(250ms);
+    z-index: 9998;
+
+    &.active {
+        visibility: hidden;
+        @include linear(250ms);
+    }
+
+    &__up,&__down {
+        width: 100%;
+        height: calc(100vh / 2);
+    }
+
+    &__up {
+        &.active {
+            transform: translateY(-100%);
+            @include linear(250ms);
+        }
+    }
+
+    &__down {
+        &.active {
+            transform: translateY(100%);
+            @include linear(250ms);
+        }
+    }
+}

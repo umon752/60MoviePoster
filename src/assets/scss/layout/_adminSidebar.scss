@@ -1,0 +1,52 @@
+.adminSidebar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1050;
+    opacity: .9;
+    background-color: black;
+    @include bg-material;
+    box-shadow: -6px 0px 6px rgba(0, 0, 0, 0.3);
+    transform: translateX(-100%);
+    @include linear;
+
+    @include media-breakpoint-up(md) {
+        width: 340px;
+    }
+
+    @include media-breakpoint-up(xl) {
+        position: sticky;
+        transform: translateX(0);
+        @include linear;
+    }
+
+    .link-primary {
+        opacity: 0;
+
+        @include media-breakpoint-up(xl) {
+            opacity: 1;
+        }
+    }
+
+    &.active {
+        transform: translateX(0);
+        display: block;
+
+        .link-primary {
+            opacity: 1;
+            @include linear(500ms);
+        }
+    }
+
+    &__item {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+
+    .active {
+        color: $primary;
+    }
+}

@@ -1,0 +1,18 @@
+.point {
+    position: absolute;
+    top: 0px;
+    right: -12px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: $primary;
+    color: white;
+
+    @include media-breakpoint-up(md) {
+        right: 2px;
+    }
+}

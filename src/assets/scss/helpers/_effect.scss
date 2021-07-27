@@ -1,0 +1,30 @@
+.flashing {
+    animation: flashing 1100ms ease-in-out infinite alternate;
+}
+.flashing-shadow {
+    animation: flashing-shadow 1000ms ease-in-out infinite alternate;
+}
+
+@keyframes flashing {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: .75;
+    }
+}
+@keyframes flashing-shadow {
+    0% {
+        opacity: 1;
+        box-shadow: -16px 16px 16px rgba(37, 37, 37, 0.5);
+    }
+    100% {
+        opacity: .8;
+        box-shadow: -8px 8px 8px rgba(37, 37, 37, 0.5);
+    }
+}
+
+.disabled {
+    opacity: .4;
+    pointer-events: none;
+}

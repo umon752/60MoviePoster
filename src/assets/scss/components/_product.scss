@@ -1,0 +1,40 @@
+.product {
+
+    @include media-breakpoint-up(lg) {
+        width: 80%;
+    }
+
+    &__img {
+        @include img-cover(100%, 160px, center);
+
+        @include media-breakpoint-up(sm) {
+            height: 250px;
+        }
+
+        @include media-breakpoint-up(md) {
+            height: 200px;
+        }
+
+        @include media-breakpoint-up(lg) {
+            height: 230px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            height: 200px;
+        }
+    }
+
+    .mask-fill {
+        opacity: 0;
+        @include linear;
+
+        // @include media-breakpoint-up(lg) {
+        //     width: 80%;
+        // }
+    }
+
+    &:hover .mask-fill {
+        opacity: 1;
+        @include linear;
+    }
+}

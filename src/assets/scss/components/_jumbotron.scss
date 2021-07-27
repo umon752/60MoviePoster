@@ -1,0 +1,11 @@
+.jumbotron {
+    @include img-cover(100%, 200px, center);
+
+    @include media-breakpoint-up(md) {
+        height: 280px;
+    }
+
+    @include media-breakpoint-up(xl) {
+        height: 350px;
+    }
+}

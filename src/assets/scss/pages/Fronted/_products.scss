@@ -1,0 +1,62 @@
+.products {
+
+    &__img {
+        @include img-cover(100%, 210px, center);
+
+        @include media-breakpoint-up(sm) {
+            height: 310px;
+        }
+    
+        @include media-breakpoint-up(md) {
+            height: 240px;
+        }
+    }
+
+    .mask-fill {
+        opacity: 0;
+        @include linear;
+    }
+
+    &:hover .mask-fill {
+        opacity: 1;
+        @include linear;
+    }
+
+    &:hover .products__btn {
+        transform: translateY(0);
+        @include linear;
+    }
+
+    &:hover .products__favoriteBtn {
+        transform: translateY(0);
+        @include linear;
+    }
+
+    // spinner loading 時加入
+    &.active {
+        .mask-fill {
+            opacity: 1;
+        }
+        .products__btn {
+            transform: translateY(0);
+        }
+        .products__favoriteBtn {
+            transform: translateY(0);
+        }
+    }
+
+    &__favoriteBtn {
+        transform: translateY(-2px);
+        @include linear;
+    }
+
+    &__btn {
+        transform: translateY(100%);
+        @include linear;
+
+        &.disabled {
+            pointer-events: none;
+            opacity: .5 !important;
+        }
+    }
+}

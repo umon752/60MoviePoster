@@ -1,0 +1,42 @@
+.arrow-btn {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.icon-btn {
+    width: 42px;
+    height: 42px;
+    background-color: $secondary-dark;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+// 覆蓋 Bootstrap 設定
+.btn-outline-secondary {
+    &:hover {
+        background: transparent;
+        color: $primary !important;
+        border-color: $primary;
+        opacity: .8;
+    }
+
+    &.active {
+        background: transparent;
+        color: $primary !important;
+        border-color: $primary;
+        opacity: .8;
+    }
+}
+
+.btn-close {
+    @include linear;
+    &:hover {
+        @include linear;
+    }
+}

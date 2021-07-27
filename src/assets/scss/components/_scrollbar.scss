@@ -1,0 +1,15 @@
+.scrollbar {
+    overflow-x: scroll;
+    scrollbar-width: thin; // Firefox 設定
+
+    &::-webkit-scrollbar {
+        height: 3px;
+        background-color: #87878746;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: black;
+        border-radius: 4px;
+    }
+}

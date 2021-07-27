@@ -1,0 +1,20 @@
+.goTop {
+    position: fixed;
+    bottom: 14px;
+    right: 14px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 999;
+    @include linear;
+
+    @include media-breakpoint-up(md) {
+        bottom: 30px;
+        right: 30px;
+    }
+
+    &.active {
+        opacity: 1;
+        visibility: inherit;
+        @include linear;
+    }
+}

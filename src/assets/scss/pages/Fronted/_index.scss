@@ -1,0 +1,471 @@
+.banner {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    @include ease-in-out;
+
+    &.active {
+        opacity: 0;
+        transform: translateX(-100%);
+        @include ease-in-out;
+    }
+
+    &.opening {
+        opacity: 1;
+        // transform: translateX(-100%);
+        @include linear;
+    }
+}
+
+.banner02 {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: translateX(100%);
+    @include ease-in-out;
+
+    &.active {
+        opacity: 1;
+        transform: translateX(0);
+        @include ease-in-out;
+    }
+}
+
+.bannerEffect {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+    z-index: 999;
+    animation: flashing-banner 1100ms ease-in-out infinite alternate;
+    box-shadow: inset 0px 0px 180px rgba(0, 0, 0, .8);
+}
+
+@keyframes flashing-banner {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: .8;
+    }
+}
+
+.bannerNoise {
+    position: absolute;
+    top: 0;
+    left: 0;
+    mix-blend-mode: hard-light;
+    transform: scale(1.1);
+    opacity: 0;
+    z-index: 998;
+    @include linear;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: bottom;
+
+    &.active {
+        opacity: .8;
+        transform: scale(1);
+        @include linear;
+    }
+}
+
+.coverImg {
+    opacity: 0;
+    transform: translateY(10px);
+    @include linear(350ms);
+
+    &.opening {
+        opacity: 1;
+        transform: translateY(0);
+        @include linear(350ms);
+    }
+}
+
+.coverIntro {
+    opacity: 0;
+    transform: translateY(10px);
+    @include linear(350ms);
+
+    &.opening {
+        opacity: 1;
+        transform: translateY(0);
+        @include linear(350ms);
+    }
+}
+
+.coverBtn {
+    opacity: 0;
+    transform: translateY(10px);
+    @include linear(350ms);
+
+    &.opening {
+        opacity: 1;
+        transform: translateY(0);
+        @include linear(350ms);
+    }
+}
+
+.headerPeople {
+    position: relative;
+    z-index: 999;
+    // opacity: 0;
+    // transform: translateX(5px) translateY(5px);
+    // @include linear(350ms);
+
+    @include media-breakpoint-up(sm) {
+        position: absolute;
+        right: 12px;
+        bottom: 0;
+    }
+
+    // &.opening {
+    //     opacity: .8;
+    //     transform: translateX(0) translateY(0);
+    //     @include linear(350ms);
+    // }
+
+    &__img {
+        width: 130px;
+        margin-left: auto;
+
+        @include media-breakpoint-up(sm) {
+            width: 150px;
+        }
+
+
+        @include media-breakpoint-up(xl) {
+            width: 180px;
+        }
+
+        @include media-breakpoint-up(xxl) {
+            width: 100%;
+        }
+    }
+
+    // &::before {
+    //     content: '';
+    //     width: 90px;
+    //     height: 2px;
+    //     background-color: rgba(255, 255, 255, 0.2);
+    //     position: absolute;
+    //     top: -10px;
+    //     right: 80px;
+    //     transform: rotate(40deg);
+    //     animation: shine-before 1100ms ease-in-out 800ms infinite alternate;
+
+    //     @include media-breakpoint-up(sm) {
+    //         top: 15px;
+    //         left: -45px;
+    //     }
+
+    //     @include media-breakpoint-up(md) {
+    //         width: 100px;
+    //         top: -5px;
+    //         left: -50px;
+    //     }
+
+    //     @include media-breakpoint-up(xl) {
+    //         width: 120px;
+    //         top: 0;
+    //         left: -50px;
+    //     }
+    // }
+
+    // &::after {
+    //     content: '';
+    //     width: 90px;
+    //     height: 2px;
+    //     background-color: rgba(255, 255, 255, 0.2);
+    //     position: absolute;
+    //     top: 50px;
+    //     right: 95px;
+    //     transform: rotate(-5deg);
+    //     animation: shine-after 1200ms ease-in-out 800ms infinite alternate;
+
+    //     @include media-breakpoint-up(sm) {
+    //         top: 70px;
+    //         left: -62px;
+    //     }
+
+    //     @include media-breakpoint-up(md) {
+    //         width: 100px;
+    //         top: 60px;
+    //         left: -65px;
+    //     }
+
+    //     @include media-breakpoint-up(xl) {
+    //         width: 120px;
+    //         top: 80px;
+    //         left: -70px;
+    //     }
+    // }
+
+    &__light {
+        width: 200px;
+        height: 140px;
+        clip-path: polygon(0 0, 100% 48%, 100% 52%, 0% 100%);
+        background: linear-gradient(270deg, rgba(122, 108, 87, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+        position: absolute;
+        top: -60px;
+        right: 90px;
+        transform: rotate(15deg);
+        animation: light 800ms ease-in-out 500ms infinite alternate;
+
+        @include media-breakpoint-up(sm) {
+            top: -55px;
+            right: 105px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            top: -48px;
+            right: 128px;
+        }
+
+        @include media-breakpoint-up(xxl) {
+            top: -38px;
+            right: 150px;
+        }
+    }
+
+    &__text {
+        color: $secondary;
+        position: absolute;
+        top: -16px;
+        right: 30px;
+        opacity: 0;
+        letter-spacing: .1rem;
+
+        @include media-breakpoint-up(sm) {
+            right: 40px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            right: 45px;
+        }
+
+        @include media-breakpoint-up(xxl) {
+            right: 60px;
+        }
+
+        &.active {
+            animation: click 1000ms ease-in-out 400ms infinite alternate;
+        }
+    }
+}
+
+@keyframes light {
+    0% {
+        width: 200px;
+        opacity: 1;
+    }
+
+    100% {
+        width: 195px;
+        opacity: .7;
+    }
+}
+
+@keyframes click {
+    0% {
+        transform: translateY(2px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: .6;
+    }
+}
+
+.news {
+    height: 140px;
+    position: relative;
+
+    @include media-breakpoint-up(md) {
+        height: 160px;
+    }
+
+    @include media-breakpoint-up(xl) {
+        height: 220px;
+    }
+
+    &__img {
+        @include img-cover(100%, 100%, center);
+    }
+
+    &:hover .mask-circle {
+        opacity: .3;
+        @include linear;
+    }
+}
+
+.dividerTitle {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 20%;
+        height: 1px;
+        background-color: $secondary;
+        transform: translateY(-50%);
+
+        @include media-breakpoint-up(sm) {
+            width: 25%;
+        }
+
+        @include media-breakpoint-up(lg) {
+            width: 30%;
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 35%;
+        }
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 20%;
+        height: 1px;
+        background-color: $secondary;
+        transform: translateY(-50%);
+
+        @include media-breakpoint-up(md) {
+            width: 25%;
+        }
+
+        @include media-breakpoint-up(lg) {
+            width: 30%;
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 35%;
+        }
+    }
+}
+
+.recommend {
+
+    &__mainImg {
+        @include img-cover(70%, auto, center);
+        box-shadow: -16px 16px 16px rgba(37, 37, 37, 0.5);
+
+        @include media-breakpoint-up(md) {
+            width: 100%;
+            height: 380px;
+        }
+
+        @include media-breakpoint-up(lg) {
+            width: 80%;
+            height: 455px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 80%;
+            height: 670px;
+        }
+    }
+
+    &__thumbnail {
+        cursor: pointer;
+        opacity: .5;
+        @include linear;
+
+        &:hover {
+            opacity: 1;
+            @include linear;
+        }
+
+        &__img {
+            @include img-cover(100%, 140px, center);
+
+            @include media-breakpoint-up(sm) {
+                height: 200px;
+            }
+
+            @include media-breakpoint-up(md) {
+                height: 150px;
+            }
+
+            @include media-breakpoint-up(lg) {
+                height: 220px;
+            }
+
+            @include media-breakpoint-up(xl) {
+                height: 250px;
+            }
+        }
+    }
+
+    // swiper
+    .mySwiper .swiper-slide-thumb-active {
+        opacity: 1;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        z-index: 1050;
+        height: 100%;
+        top: 22px;
+        background-color: $dark;
+        font-size: 16px;
+        width: 34px;
+        display: none;
+
+        @include media-breakpoint-up(md) {
+            display: flex;
+        }
+
+        @include media-breakpoint-up(lg) {
+            width: 36px;
+        }
+
+        &:hover::after {
+            color: $primary !important;
+            @include linear;
+        }
+    }
+
+    .swiper-button-prev {
+        left: 0;
+        border-right: 1px solid $secondary;
+    }
+
+    .swiper-button-next {
+        right: 0;
+        border-left: 1px solid $secondary;
+    }
+
+    .swiper-button-prev::after {
+        content: 'arrow_left';
+        font-family: "Material Icons";
+        color: $secondary;
+        @include linear;
+    }
+
+    .swiper-button-next::after {
+        content: 'arrow_right';
+        font-family: "Material Icons";
+        color: $secondary;
+        @include linear;
+    }
+
+    .swiper-button-prev.swiper-button-disabled,
+    .swiper-button-next.swiper-button-disabled {
+        opacity: 1;
+    }
+
+    .swiper-button-prev.swiper-button-disabled::after,
+    .swiper-button-next.swiper-button-disabled::after {
+        color: #c0c0c034;
+    }
+}
