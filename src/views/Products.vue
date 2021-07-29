@@ -455,7 +455,7 @@ export default {
           });
       } else {
         // 顯示訊息
-        this.$alertState(false, 'More than the maximum amount of inventory, add to cart');
+        this.$alertState(false, 'Exceed the maximum inventory, add to cart');
       }
     },
     addFavorite(item) {

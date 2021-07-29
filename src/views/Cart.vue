@@ -128,9 +128,11 @@
                   <a
                     href="#"
                     class="link-primary px-md-2"
+                    :class="{ disabled: item.qty >= item.product.inStock }"
                     @click.prevent="addQty(item.qty, item)"
                   >
-                    <span class="material-icons"> add </span>
+                    <span class="material-icons"
+                    :class="{ 'opacity-50': item.qty >= item.product.inStock }"> add </span>
                   </a>
                 </li>
                 <li
@@ -314,6 +316,9 @@ export default {
     addQty(qty, item) {
       let num = qty;
       num += 1;
+      if (num > item.product.inStock) {
+        num = item.product.inStock;
+      }
       this.$emit('updateCart', num, item);
     },
     removeQty(qty, item) {

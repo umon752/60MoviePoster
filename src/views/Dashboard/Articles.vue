@@ -200,15 +200,7 @@ export default {
         this.modalTitle = state;
       } else if (state === 'CREATE') {
         this.$refs.articleModal.openModal();
-        // push 空資料
-        this.articleData = {
-          title: '',
-          author: '',
-          description: '',
-          content: '',
-          tag: [''],
-          isPublic: false,
-        };
+        this.$refs.articleModal.resetForm();
         this.modalTitle = state;
       }
     },
@@ -260,21 +252,28 @@ export default {
         method = 'post';
       }
 
-      this.$http[method](url, {
-        data: item,
+      this.$refs.articleModal.$refs.form.validate().then((success) => {
+        if (success.valid) {
+          this.$http[method](url, {
+            data: item,
+          })
+            .then((res) => {
+              if (res.data.success) {
+                // 顯示訊息
+                this.$alertState(res.data.success, 'Update this article');
+                this.getArticles();
+                this.$refs.articleModal.closeModal();
+              } else {
+                // 顯示訊息
+                this.$alertState(res.data.success, 'Update this article');
+              }
+              this.isSpinner = false;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       })
-        .then((res) => {
-          if (res.data.success) {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Update this article');
-            this.getArticles();
-            this.$refs.articleModal.closeModal();
-          } else {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Update this article');
-          }
-          this.isSpinner = false;
-        })
         .catch((error) => {
           console.log(error);
         });

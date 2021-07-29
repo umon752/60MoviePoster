@@ -178,25 +178,7 @@ export default {
         this.modalTitle = state;
       } else if (state === 'CREATE') {
         this.$refs.productModal.openModal();
-        // push 空資料
-        this.productData = {
-          title: '',
-          category: '',
-          imageUrl: '',
-          imagesUrl: [
-            '', '', '',
-          ],
-          unit: 'Sheet',
-          origin_price: null,
-          price: null,
-          year: null,
-          country: '',
-          type: 'Unfolded Original One Sheet',
-          size: '61 × 91.5 cm',
-          description: '',
-          content: 'Shipping NT$100. Free shipping for order greater than NT$6,000.<br>\nOrders are processed 1-2 business days after an order has been placed, Monday – Friday, excluding weekends, public and bank holidays and scheduled warehouse closures.',
-          inStock: null,
-        };
+        this.$refs.productModal.resetForm();
         this.modalTitle = state;
       }
     },
@@ -261,21 +243,28 @@ export default {
         method = 'post';
       }
 
-      this.$http[method](url, {
-        data: item,
+      this.$refs.productModal.$refs.form.validate().then((success) => {
+        if (success.valid) {
+          this.$http[method](url, {
+            data: item,
+          })
+            .then((res) => {
+              if (res.data.success) {
+                // 顯示訊息
+                this.$alertState(res.data.success, 'Update this product');
+                this.getProducts();
+                this.$refs.productModal.closeModal();
+              } else {
+                // 顯示訊息
+                this.$alertState(res.data.success, 'Update this product');
+              }
+              this.isSpinner = false;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       })
-        .then((res) => {
-          if (res.data.success) {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Update this product');
-            this.getProducts();
-            this.$refs.productModal.closeModal();
-          } else {
-            // 顯示訊息
-            this.$alertState(res.data.success, 'Update this product');
-          }
-          this.isSpinner = false;
-        })
         .catch((error) => {
           console.log(error);
         });

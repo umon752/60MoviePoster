@@ -21,15 +21,11 @@
           ></button>
         </div>
         <div class="modal-body">
-          <Form v-slot="{ errors }" class="mb-4"
-          ref="form" v-if="modalTitle === 'CREATE'">
+          <Form v-slot="{ errors }" class="mb-4" ref="form">
             <div class="mb-5">
               <label for="title" class="form-label text-secondary">
-                <span class="text-primary">*</span>TITLE</label>
-                <!-- <input type="text" class="form-control"
-                id="title"
-                placeholder="Please enter a title"
-                v-model.trim="tempCoupon.title"> -->
+                <span class="text-primary">*</span>TITLE</label
+              >
               <Field
                 type="text"
                 class="form-control"
@@ -47,91 +43,8 @@
             </div>
             <div class="mb-5">
               <label for="code" class="form-label text-secondary">
-                <span class="text-primary">*</span>CODE</label>
-              <Field
-                type="text"
-                class="form-control"
-                id="code"
-                name="Code"
-                placeholder="Please enter a code"
-                :class="{ 'is-invalid': errors['Code'] }"
-                rules="required"
-                v-model.trim="tempCoupon.code"
-              />
-              <error-message
-                name="Code"
-                class="invalid-feedback"
-              ></error-message>
-            </div>
-            <div class="mb-5">
-              <label for="date" class="form-label text-secondary"
-                ><span class="text-primary">*</span>DUE DATE</label
+                <span class="text-primary">*</span>CODE</label
               >
-              <input
-                type="date"
-                class="form-control text-secondary"
-                id="date"
-                :min="today"
-                v-model="due_date"
-              />
-            </div>
-            <div class="mb-5">
-              <label for="percent" class="form-label text-secondary"
-                ><span class="text-primary">*</span>PERCENT</label
-              >
-              <Field
-                type="text"
-                class="form-control"
-                id="percent"
-                name="Percent"
-                placeholder="Please enter a percent"
-                :class="{ 'is-invalid': errors['Percent'] }"
-                rules="required"
-                v-model.number="tempCoupon.percent"
-              />
-              <error-message
-                name="Percent"
-                class="invalid-feedback"
-              ></error-message>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="isEnabled"
-                :true-value="1"
-                :false-value="0"
-                v-model.number="tempCoupon.is_enabled"
-              />
-              <label class="form-check-label" for="isEnabled">
-                IS ENABLED
-              </label>
-            </div>
-          </Form>
-          <Form v-slot="{ errors }" class="mb-4"
-          @submit="$emit('updateCoupon', tempCoupon, modalTitle)"
-          ref="form" v-else>
-            <div class="mb-5">
-              <label for="title" class="form-label text-secondary">
-                <span class="text-primary">*</span>TITLE</label>
-              <Field
-                type="text"
-                class="form-control"
-                id="title"
-                name="Title"
-                placeholder="Please enter a title"
-                :class="{ 'is-invalid': errors['Title'] }"
-                rules="required"
-                v-model.trim="tempCoupon.title"
-              />
-              <error-message
-                name="Title"
-                class="invalid-feedback"
-              ></error-message>
-            </div>
-            <div class="mb-5">
-              <label for="code" class="form-label text-secondary">
-                <span class="text-primary">*</span>CODE</label>
               <Field
                 type="text"
                 class="form-control"
@@ -204,7 +117,7 @@
           <button
             type="type"
             class="btn btn-sm btn-primary"
-          @click="$emit('updateCoupon', tempCoupon, modalTitle)"
+            @click="$emit('updateCoupon', tempCoupon, modalTitle)"
           >
             <Spinner v-if="isSpinner" />OK
           </button>
@@ -245,30 +158,35 @@ export default {
       today: '',
     };
   },
-  watch: {
-    couponData() {
-      if (this.modalTitle === 'CREATE') {
-        // 清除表單 (將驗證訊息清除)
-        this.$refs.form.resetForm();
-        // delete this.tempCoupon.title;
-        // delete this.tempCoupon.code;
-        // this.tempCoupon = {};
-      }
-      this.tempCoupon = JSON.parse(JSON.stringify(this.couponData));
-      // this.tempCoupon = { ...this.couponData };
-      console.log('內層 tempCoupon', this.tempCoupon);
-
-      // 預設加上今天日期，格式為 timestamp (時間戳)
+  methods: {
+    // CREATE 資料處理
+    resetForm() {
+      // 這裡 reset 是避免暫存已被刪除的資料 (暫存已被刪除的資料開啟同一筆會無法顯示)
+      this.tempCoupon = {
+        title: '',
+        code: '',
+        due_date: '',
+        percent: '',
+        is_enabled: 0,
+      };
       this.tempCoupon.due_date = new Date().getTime() / 1000;
+      const dateAndTime = new Date(this.tempCoupon.due_date * 1000).toISOString().split('T');
+      [this.due_date, this.test] = dateAndTime;
+      // 設定最小值 (今天日期)，格式 YYYY-MM-DD
+      this.today = Math.floor(Date.now() / 1000);
+      [this.today] = dateAndTime;
+      // 利用非同步處理立即觸發 veevalidate 的問題
+      setTimeout(() => this.$refs.form.resetForm(), 0);
+    },
+  },
+  watch: {
+    // EDIT 資料處理
+    couponData() {
+      this.tempCoupon = JSON.parse(JSON.stringify(this.couponData));
       // 將從外層取得的時間資料，格式改為 YYYY-MM-DD
       const dateAndTime = new Date(this.tempCoupon.due_date * 1000).toISOString().split('T');
       // 解構賦值（Destructuring Assignment）
       [this.due_date, this.test] = dateAndTime;
-      // 設定最小值 (今天日期)，為"新增"時才執行設定，格式 YYYY-MM-DD
-      if (this.modalTitle === 'CREATE') {
-        this.today = Math.floor(Date.now() / 1000);
-        [this.today] = dateAndTime;
-      }
     },
     due_date() {
       // 將內層設定的時間資料，格式改回 timestamp (時間戳)

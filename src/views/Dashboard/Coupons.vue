@@ -180,12 +180,8 @@ export default {
         this.modalTitle = state;
       } else if (state === 'CREATE') {
         this.$refs.couponModal.openModal();
-        // push 空資料 is_enabled 預設 false
-        this.couponData = {
-          is_enabled: 0,
-        };
+        this.$refs.couponModal.resetForm();
         this.modalTitle = state;
-        console.log('外層 couponData', this.couponData);
       }
     },
     delCoupon() {

@@ -623,10 +623,34 @@ export default {
   },
   watch: {
     productData() {
-      this.tempProduct = { ...this.productData };
+      this.tempProduct = JSON.parse(JSON.stringify(this.productData));
+      // this.tempProduct = { ...this.productData };
     },
   },
   methods: {
+    resetForm() {
+      // 這裡 reset 是避免暫存已被刪除的資料 (暫存已被刪除的資料開啟同一筆會無法顯示)
+      this.tempProduct = {
+        title: '',
+        category: '',
+        imageUrl: '',
+        imagesUrl: [
+          '', '', '',
+        ],
+        unit: 'Sheet',
+        origin_price: null,
+        price: null,
+        year: null,
+        country: '',
+        type: 'Unfolded Original One Sheet',
+        size: '61 × 91.5 cm',
+        description: '',
+        content: 'Shipping NT$100. Free shipping for order greater than NT$6,000.<br>\nOrders are processed 1-2 business days after an order has been placed, Monday – Friday, excluding weekends, public and bank holidays and scheduled warehouse closures.',
+        inStock: null,
+      };
+      // 利用非同步處理立即觸發 veevalidate 的問題
+      setTimeout(() => this.$refs.form.resetForm(), 0);
+    },
     recoveryState() {
       // 恢復狀態
       this.uploadState.cloud = true;

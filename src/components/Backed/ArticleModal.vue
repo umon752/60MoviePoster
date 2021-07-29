@@ -25,7 +25,7 @@
           ></button>
         </div>
         <div class="modal-body">
-          <Form v-slot="{ errors }" class="row mb-4">
+          <Form v-slot="{ errors }" class="row mb-4" ref="form">
             <div class="col-md-6">
               <div class="row">
                 <div class="col-12 mb-5">
@@ -111,8 +111,11 @@
             <div class="col-md-6">
               <label for="tag" class="form-label text-secondary">TAG</label>
               <div class="row align-items-center mb-2">
-                <div class="col-6 col-xl-4 mb-3"
-                  v-for="(item, index) in tempArticle.tag" :key="index">
+                <div
+                  class="col-6 col-xl-4 mb-3"
+                  v-for="(item, index) in tempArticle.tag"
+                  :key="index"
+                >
                   <div class="position-relative">
                     <input
                       type="text"
@@ -141,14 +144,27 @@
                   </div>
                 </div>
                 <div class="col-6 col-xl-4 mb-3">
-                <button type="button" class="btn btn-outline-primary rounded-pill w-100
-                d-flex align-items-center justify-content-center py-1"
-                v-if="tempArticle.tag"
-                @click="addTag"
-                :class="{disabled: tempArticle.tag[tempArticle.tag.length - 1] === ''}">
-                  <span class="material-icons me-1"> add </span>
-                  ADD TAG
-                </button>
+                  <button
+                    type="button"
+                    class="
+                      btn btn-outline-primary
+                      rounded-pill
+                      w-100
+                      d-flex
+                      align-items-center
+                      justify-content-center
+                      py-1
+                    "
+                    v-if="tempArticle.tag"
+                    @click="addTag"
+                    :class="{
+                      disabled:
+                        tempArticle.tag[tempArticle.tag.length - 1] === '',
+                    }"
+                  >
+                    <span class="material-icons me-1"> add </span>
+                    ADD TAG
+                  </button>
                 </div>
               </div>
 
@@ -212,7 +228,7 @@ export default {
     return {
       editor: ClassicEditor,
       editorConfig: {
-        toolbar: ['heading', 'typing', 'bold', 'italic', '|', 'link'],
+        toolbar: ['heading', 'bold', 'italic', '|', 'link'],
       },
       tempArticle: {},
       create_at: '',
@@ -221,18 +237,11 @@ export default {
   },
   watch: {
     articleData() {
-      this.tempArticle = { ...this.articleData };
-      // 預設加上今天日期，格式為 timestamp (時間戳)
-      this.tempArticle.create_at = new Date().getTime() / 1000;
+      this.tempArticle = JSON.parse(JSON.stringify(this.articleData));
       // 將從外層取得的時間資料，格式改為 YYYY-MM-DD
       const dateAndTime = new Date(this.tempArticle.create_at * 1000).toISOString().split('T');
       // 解構賦值（Destructuring Assignment）
       [this.create_at, this.test] = dateAndTime;
-      // 設定最小值 (今天日期)，為"新增"時才執行設定，格式 YYYY-MM-DD
-      if (this.modalTitle === 'CREATE') {
-        this.today = Math.floor(Date.now() / 1000);
-        [this.today] = dateAndTime;
-      }
     },
     create_at() {
       // 將內層設定的時間資料，格式改回 timestamp (時間戳)
@@ -240,6 +249,25 @@ export default {
     },
   },
   methods: {
+    resetForm() {
+      // 這裡 reset 是避免暫存已被刪除的資料 (暫存已被刪除的資料開啟同一筆會無法顯示)
+      this.tempArticle = {
+        title: '',
+        author: '',
+        description: '',
+        content: '',
+        tag: [''],
+        isPublic: false,
+      };
+      this.tempArticle.create_at = new Date().getTime() / 1000;
+      const dateAndTime = new Date(this.tempArticle.create_at * 1000).toISOString().split('T');
+      [this.create_at, this.test] = dateAndTime;
+      // 設定最小值 (今天日期)，格式 YYYY-MM-DD
+      this.today = Math.floor(Date.now() / 1000);
+      [this.today] = dateAndTime;
+      // 利用非同步處理立即觸發 veevalidate 的問題
+      setTimeout(() => this.$refs.form.resetForm(), 0);
+    },
     delTag(index) {
       if (this.tempArticle.tag.length > 1) {
         this.tempArticle.tag.splice(index, 1);

@@ -471,7 +471,7 @@ export default {
       if (num > item.product.inStock) {
         num = item.product.inStock;
         // 顯示訊息
-        this.$alertState(false, 'More than the maximum amount of inventory, enter');
+        this.$alertState(false, 'Exceed the maximum inventory, enter');
       }
       item.product.inStock -= num;
       if (num <= 0) {

@@ -336,7 +336,7 @@ export default {
       if (this.qty > this.inStock && this.inStock !== 0) {
         this.qty = this.inStock;
         // 顯示訊息
-        this.$alertState(false, 'More than the maximum amount of inventory, enter');
+        this.$alertState(false, 'Exceed the maximum inventory, enter');
       }
     },
     productRouteId(value) {
