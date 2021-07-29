@@ -390,16 +390,6 @@ export default {
     };
   },
   inject: ['emitter', '$alertState'],
-  // watch: {
-  //   qty() {
-  //     if (this.qty <= 1) {
-  //       this.qty = 1;
-  //     }
-  //     if (this.qty > this.productData.inStock) {
-  //       this.qty = this.productData.inStock;
-  //     }
-  //   },
-  // },
   methods: {
     openLoginModal() {
       this.$refs.loginModal.openModal();
@@ -473,7 +463,7 @@ export default {
         // 顯示訊息
         this.$alertState(false, 'Exceed the maximum inventory, enter');
       }
-      item.product.inStock -= num;
+      // item.product.inStock -= num;
       if (num <= 0) {
         num = 1; // 強制設為 1
         this.cartsData.carts[index].qty = 1;

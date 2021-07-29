@@ -544,6 +544,8 @@ export default {
         tabTrigger.show();
       });
     });
+    // 更新購物車資料
+    this.$emit('getCartsData');
   },
   components: {
     Spinner,
