@@ -21,11 +21,17 @@
           ></button>
         </div>
         <div class="modal-body">
-          <p class="mb-1" v-if="data.title">
+          <p class="text-break mb-1" v-if="modalTitle === 'PRODUCT'">
             Do you want to delete this {{ data.title }}?
           </p>
-          <p class="mb-1" v-if="!data.title">
+          <p class="mb-1" v-else-if="modalTitle === 'ORDER'">
             Do you want to delete this order?
+          </p>
+          <p class="mb-1" v-else-if="modalTitle === 'COUPON'">
+            Do you want to delete this coupon?
+          </p>
+          <p class="mb-1" v-else-if="modalTitle === 'ARTICLE'">
+            Do you want to delete this article?
           </p>
           <p class="fs-5 text-primary">Cannot be restored after deletion.</p>
         </div>

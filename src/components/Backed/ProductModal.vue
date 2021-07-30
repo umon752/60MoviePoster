@@ -467,7 +467,7 @@
                       <!-- 輸入網址 -->
                       <input
                         type="text"
-                        :id="index"
+                        id="mainImg"
                         class="form-control"
                         placeholder="Please enter an image url"
                         v-if="uploadState.link"
@@ -495,7 +495,7 @@
                     v-for="(item, index) in tempProduct.imagesUrl"
                     :key="index"
                   >
-                    <label :for="index" class="form-label w-100 mb-0">
+                    <label :for="`otherImg${index}`" class="form-label w-100 mb-0">
                       <div
                         class="
                           mask-fill
@@ -516,7 +516,7 @@
                       <!-- 本地上傳 -->
                       <div class="flex-grow-1" v-if="uploadState.cloud">
                         <label
-                          :for="index"
+                          :for="`otherImg${index}`"
                           class="
                             form-label
                             btn btn-outline-secondary
@@ -525,7 +525,7 @@
                           "
                         >
                           <Spinner
-                            v-if="innerSpinner === `otherImg ${index}`"
+                            v-if="innerSpinner === `otherImg${index}`"
                           />
                           UPLOAD</label
                         >
@@ -534,13 +534,13 @@
                           class="form-control d-none"
                           name="file-to-upload"
                           @change="upload($event.target, index)"
-                          :id="index"
+                          :id="`otherImg${index}`"
                         />
                       </div>
                       <!-- 輸入網址 -->
                       <input
                         type="text"
-                        :id="index"
+                        :id="`otherImg${index}`"
                         class="form-control"
                         placeholder="Please enter an image url"
                         v-if="uploadState.link"
@@ -637,19 +637,25 @@ export default {
         imagesUrl: [
           '', '', '',
         ],
-        unit: 'Sheet',
+        unit: '',
         origin_price: null,
         price: null,
         year: null,
         country: '',
-        type: 'Unfolded Original One Sheet',
-        size: '61 × 91.5 cm',
+        type: '',
+        size: '',
         description: '',
         content: 'Shipping NT$100. Free shipping for order greater than NT$6,000.<br>\nOrders are processed 1-2 business days after an order has been placed, Monday – Friday, excluding weekends, public and bank holidays and scheduled warehouse closures.',
         inStock: null,
       };
       // 利用非同步處理立即觸發 veevalidate 的問題
       setTimeout(() => this.$refs.form.resetForm(), 0);
+      // 有使用 veevalidate 的屬性加上預設內容
+      setTimeout(() => {
+        this.tempProduct.unit = 'Sheet';
+        this.tempProduct.type = 'Unfolded Original One Sheet';
+        this.tempProduct.size = '61 × 91.5 cm';
+      }, 1);
     },
     recoveryState() {
       // 恢復狀態
@@ -675,7 +681,7 @@ export default {
       if (index === undefined) {
         this.innerSpinner = 'mainImg';
       } else {
-        this.innerSpinner = `otherImg ${index}`;
+        this.innerSpinner = `otherImg${index}`;
       }
       this.$http.post(url, formData)
         .then((res) => {

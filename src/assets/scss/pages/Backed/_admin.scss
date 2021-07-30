@@ -9,4 +9,13 @@
             overflow-x: hidden;
         }
     }
+
+    th,
+    td {
+        white-space: nowrap;
+        @include media-breakpoint-up(xxl) {
+            word-break : break-all;
+            white-space: normal;
+        }
+    }
 }

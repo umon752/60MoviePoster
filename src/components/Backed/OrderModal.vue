@@ -81,6 +81,12 @@
                     >NT$ {{ $filters.thousands(tempOrder.total) }}</span
                   >
                 </li>
+                <li class="border-bottom py-3">
+                  <p class="fw-bold w-30 d-inline-block">MESSAGE</p>
+                  <span class="text-secondary"
+                    >{{ tempOrder.message }}</span
+                  >
+                </li>
               </ul>
               <h4 class="fs-3 fw-bold border-bottom pb-2">PRODUCTS</h4>
               <ul class="mb-6 mb-md-7" v-if="tempOrder.products">

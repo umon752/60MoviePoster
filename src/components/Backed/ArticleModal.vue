@@ -109,7 +109,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <label for="tag" class="form-label text-secondary">TAG</label>
+              <label for="tag1" class="form-label text-secondary">TAG</label>
               <div class="row align-items-center mb-2">
                 <div
                   class="col-6 col-xl-4 mb-3"
@@ -119,7 +119,7 @@
                   <div class="position-relative">
                     <input
                       type="text"
-                      id="tag"
+                      :id="`tag${index}`"
                       class="form-control rounded-pill pe-7"
                       placeholder="Please enter a tag"
                       v-model.trim="tempArticle.tag[index]"

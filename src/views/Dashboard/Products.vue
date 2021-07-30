@@ -30,11 +30,11 @@
 
   <!-- full state -->
   <div class="scrollbar mb-6" v-else>
-    <table class="table text-nowrap mb-8">
+    <table class="table mb-8">
       <thead class="bg-black-opacity-50 border-top">
         <tr>
           <th scope="col" class="border-bottom py-5">CATEGORY</th>
-          <th scope="col" class="border-bottom py-5">TITLE</th>
+          <th scope="col" class="border-bottom w-30 py-5">TITLE</th>
           <th scope="col" class="border-bottom py-5">ORIGIN PRICE</th>
           <th scope="col" class="border-bottom py-5">PRICE</th>
           <th scope="col" class="border-bottom py-5">IS ENABLED</th>

@@ -471,6 +471,8 @@ export default {
     this.getAllProducts();
     // Firefox Material-icons 置中
     emitter.emit('firefoxIcon');
+    // 更新購物車資料
+    this.$emit('getCartsData');
   },
   components: {
     Pagination,

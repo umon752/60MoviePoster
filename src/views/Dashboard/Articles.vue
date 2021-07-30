@@ -35,7 +35,7 @@
     <table class="table text-nowrap mb-8">
       <thead class="bg-black-opacity-50 border-top">
         <tr>
-          <th scope="col" class="border-bottom">TITLE</th>
+          <th scope="col" class="border-bottom w-30">TITLE</th>
           <th scope="col" class="border-bottom">AUTHOR</th>
           <th scope="col" class="border-bottom">DESCRIPTION</th>
           <th scope="col" class="border-bottom">CREATE DATE</th>
@@ -193,7 +193,7 @@ export default {
         this.articleData = {
           ...item,
         };
-        this.modalTitle = 'ARICLE';
+        this.modalTitle = 'ARTICLE';
       } else if (state === 'EDIT') {
         this.$refs.articleModal.openModal();
         this.getArticle(item);
