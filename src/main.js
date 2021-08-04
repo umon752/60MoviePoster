@@ -5,7 +5,9 @@ import AOS from 'aos';
 import {
   Field, Form, ErrorMessage, defineRule, configure,
 } from 'vee-validate';
-import { required, email, min } from '@vee-validate/rules';
+import {
+  required, email, min, numeric,
+} from '@vee-validate/rules';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
 import App from './App.vue';
@@ -19,6 +21,7 @@ AOS.init({
 defineRule('email', email);
 defineRule('required', required);
 defineRule('min', min);
+defineRule('numeric', numeric);
 
 configure({
   validateOnInput: true, // 調整為輸入字元立即進行驗證

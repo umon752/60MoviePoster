@@ -50,7 +50,7 @@
           </h4>
           <a
             href="#"
-            class="material-icons link-primary opacity-70"
+            class="material-icons heart-fadeOut link-primary opacity-70"
             @click.prevent="addFavorite(this.productData)"
             v-if="favoritesData.includes(this.productData.id)"
           >
@@ -58,7 +58,7 @@
           </a>
           <a
             href="#"
-            class="material-icons link-primary opacity-70"
+            class="material-icons heart-fadeOut link-primary opacity-70"
             @click.prevent="addFavorite(this.productData)"
             v-else
           >

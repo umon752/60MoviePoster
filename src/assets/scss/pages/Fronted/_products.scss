@@ -49,7 +49,6 @@
         transform: translateY(-2px);
         @include linear;
         position: relative;
-        animation: favorite 450ms linear;
     }
 
     &__btn {
@@ -60,25 +59,5 @@
             pointer-events: none;
             opacity: .5 !important;
         }
-    }
-}
-
-
-@keyframes favorite {
-    0% {
-        opacity: .8;
-        transform: translateY(0) scale(1);
-    }
-    40% {
-        opacity: 0;
-        transform: translateY(-50px) scale(.8);
-    }
-    75% {
-        opacity: 0;
-        transform: translateY(0) scale(1);
-    }
-    100% {
-        opacity: .8;
-        transform: translateY(0) scale(1);
     }
 }

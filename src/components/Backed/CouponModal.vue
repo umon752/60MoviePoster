@@ -77,7 +77,7 @@
                 ><span class="text-primary">*</span>PERCENT</label
               >
               <Field
-                type="text"
+                type="number"
                 class="form-control"
                 id="percent"
                 name="Percent"

@@ -307,7 +307,8 @@
                 :class="{ disabled: item.qty === 1 }"
                 @click.prevent="removeQty(item.qty, item)"
               >
-                <span class="material-icons"> remove </span>
+                <span class="material-icons"
+                data-cursor="cursor"> remove </span>
               </a>
               <input
                 type="number"
@@ -322,7 +323,8 @@
                 :class="{ disabled: item.qty >= item.product.inStock }"
               >
                 <span class="material-icons"
-                :class="{ 'opacity-50': item.qty >= item.product.inStock }"> add </span>
+                :class="{ 'opacity-50': item.qty >= item.product.inStock }"
+                data-cursor="cursor"> add </span>
               </a>
             </div>
             <p class="mb-1 mb-md-4">NT$ {{ $filters.thousands(item.total) }}</p>
@@ -332,7 +334,8 @@
               @click.prevent="delCartData(item.id)"
             >
               <Spinner v-if="isSpinner === item.id" />
-              <span class="material-icons" v-else>delete</span>
+              <span class="material-icons" v-else
+              data-cursor="cursor">delete</span>
             </a>
           </div>
         </li>
@@ -463,7 +466,6 @@ export default {
         // 顯示訊息
         this.$alertState(false, 'Exceed the maximum inventory, enter');
       }
-      // item.product.inStock -= num;
       if (num <= 0) {
         num = 1; // 強制設為 1
         this.cartsData.carts[index].qty = 1;

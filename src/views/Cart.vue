@@ -118,7 +118,8 @@
                     v-if="item.qty !== 0"
                     @click.prevent="removeQty(item.qty, item)"
                   >
-                    <span class="material-icons"> remove </span>
+                    <span class="material-icons"
+                    data-cursor="cursor"> remove </span>
                   </a>
                   <input
                     class="form-control w-20 text-center border-0 px-2"
@@ -132,6 +133,7 @@
                     @click.prevent="addQty(item.qty, item)"
                   >
                     <span class="material-icons"
+                    data-cursor="cursor"
                     :class="{ 'opacity-50': item.qty >= item.product.inStock }"> add </span>
                   </a>
                 </li>
@@ -151,7 +153,8 @@
                     @click.prevent="delCartData(item.id)"
                   >
                     <Spinner v-if="isSpinner === item.id" />
-                    <span class="material-icons" v-else>delete</span>
+                    <span class="material-icons" v-else
+                    data-cursor="cursor">delete</span>
                   </a>
                 </li>
               </ul>
@@ -257,8 +260,15 @@ export default {
     cartsData() {
       this.tempCartsData = { ...this.cartsData };
       this.tempCartsDataLength = this.tempCartsData.carts.length;
-      this.tempCartsTotal = this.tempCartsData.total;
-      // 更新折價
+      // 顯示折扣價
+      this.tempCartsDiscount = this.tempCartsData.total - this.tempCartsData.final_total;
+      // 顯示折扣碼
+      if (this.tempCartsData.carts.length !== 0) {
+        if (this.tempCartsData.carts[0].coupon) {
+          this.couponCode = this.tempCartsData.carts[0].coupon.code;
+        }
+      }
+      // 更新折扣價
       this.applyCoupon(this.couponCode);
     },
   },
@@ -279,19 +289,17 @@ export default {
         .post(url, couponCode)
         .then((res) => {
           if (res.data.success) {
-            this.tempCartsData.final_total = res.data.data.final_total;
-            this.tempCartsDiscount = this.tempCartsData.total - this.tempCartsData.final_total;
             if (isClickBtn) {
+              this.tempCartsData.final_total = res.data.data.final_total;
+              this.tempCartsDiscount = this.tempCartsData.total - this.tempCartsData.final_total;
               // 顯示訊息
               this.$alertState(res.data.success, 'Add coupon code');
             }
-          } else if (res.data.success === false) {
-            if (isClickBtn) {
-              // 顯示訊息
-              this.$alertState(res.data.success, 'Add coupon code');
-              // 清除 input 欄位
-              this.couponCode = '';
-            }
+          } else if (isClickBtn) {
+            // 顯示訊息
+            this.$alertState(res.data.success, 'Add coupon code');
+            // 清除 input 欄位
+            this.couponCode = '';
           }
           if (isClickBtn) {
             // 隱藏 spinner
@@ -301,9 +309,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    },
-    getCartsData() {
-      this.$emit('getCartsData');
     },
     updateCart(qty, item) {
       let num = qty;
@@ -340,7 +345,7 @@ export default {
     }), 800);
     // 隱藏 cart sidebar
     this.$emit('sidebarHide');
-    this.getCartsData();
+    this.$emit('getCartsData');
     // Firefox Material-icons 置中
     emitter.emit('firefoxIcon');
   },

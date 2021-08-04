@@ -1,9 +1,6 @@
 .flashing {
     animation: flashing 1100ms ease-in-out infinite alternate;
 }
-.flashing-shadow {
-    animation: flashing-shadow 1000ms ease-in-out infinite alternate;
-}
 
 @keyframes flashing {
     0% {
@@ -13,6 +10,11 @@
         opacity: .75;
     }
 }
+
+.flashing-shadow {
+    animation: flashing-shadow 1000ms ease-in-out infinite alternate;
+}
+
 @keyframes flashing-shadow {
     0% {
         opacity: 1;
@@ -24,7 +26,25 @@
     }
 }
 
-.disabled {
-    opacity: .4;
-    pointer-events: none;
+.heart-fadeOut {
+    animation: favorite 450ms linear;
+}
+
+@keyframes favorite {
+    0% {
+        opacity: .8;
+        transform: translateY(0) scale(1);
+    }
+    40% {
+        opacity: 0;
+        transform: translateY(-50px) scale(.8);
+    }
+    80% {
+        opacity: 0;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: .8;
+        transform: translateY(0) scale(1);
+    }
 }

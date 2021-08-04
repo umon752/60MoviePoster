@@ -136,8 +136,8 @@
                   py-1
                   me-1
                 "
-                @click="addCart(item.id)"
                 :class="{ disabled: !item.inStock }"
+                @click="addCart(item.id)"
               >
                 <Spinner
                   class="spinner lh-base my-2"
@@ -159,7 +159,8 @@
                   class="spinner lh-base my-2"
                   v-if="isSpinner === index"
                 />
-                <span class="material-icons" v-else>delete</span>
+                <span class="material-icons" v-else
+                  data-cursor="cursor">delete</span>
               </a>
             </li>
           </ul>
@@ -179,6 +180,7 @@ export default {
       tempFavoritesData: [],
       productsData: [],
       isSpinner: false,
+      // inStock: '',
     };
   },
   inject: ['emitter', '$alertState'],
@@ -190,10 +192,26 @@ export default {
         return [];
       },
     },
+    cartsData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   watch: {
     favoritesData() {
       this.tempFavoritesData = this.favoritesData;
+    },
+    cartsData() {
+      this.cartsData.carts.forEach((value) => {
+        this.productsData.forEach((item) => {
+        // 購物車有此商品則庫存數以購物車為主
+          if (value.product_id === item.id) {
+            item.inStock = value.product.inStock - value.qty;
+          }
+        });
+      });
     },
   },
   methods: {
@@ -207,6 +225,15 @@ export default {
           if (res.data.success) {
             const resData = res.data.products;
             this.productsData = resData.filter((item) => this.tempFavoritesData.includes(item.id));
+            const cart = this.cartsData.carts;
+            cart.forEach((value) => {
+              this.productsData.forEach((item) => {
+                // 購物車有此商品則庫存數以購物車為主
+                if (value.product_id === item.id) {
+                  item.inStock = value.product.inStock - value.qty;
+                }
+              });
+            });
           } else {
             // 顯示訊息
             this.$alertState(res.data.success, 'Get products');
@@ -221,6 +248,7 @@ export default {
         });
     },
     addCart(id, qty = 1) {
+      // this.inStock -= qty;
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`;
       // 顯示 spinner
       this.isSpinner = id;

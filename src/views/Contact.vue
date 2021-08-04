@@ -1,6 +1,6 @@
 <template>
   <img
-    src="https://storage.googleapis.com/vue-course-api.appspot.com/umon752/1626773700597.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=lbue8sNNTFzZybM0gT%2FnzqEpn56SPhig92riowizH%2BP4%2FUmtm6c0AAu6mkl1WlmGU%2F%2FexjB29Hcoos%2FZhN9pvvkxVG1IvZQaQp%2F8UMu8pLoCzdXB55LZfHdanFALQuyZvM85PkLXt5o1bEhiCMURk8IFjPRK6d38V%2FpWhJZZ%2FXhYisJjmNGKtD3qkNm1oFP31c91HlwB3GFMIekmJ5sbMhWZGGJ0WjBr6cgQm7NgpdO5ddqSzDChpFKXBYeg%2Bnb6RTE%2B94taPcf5lRe5eOCJIhzWUElDhNCqYc6Y6WEYE2KlhcjyL6jSLFJaVpukLPJDoSHZY2sq0%2B667Qyl%2BWCy4A%3D%3D"
+    src="https://storage.googleapis.com/vue-course-api.appspot.com/umon752/1628067824605.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=MRuO5sq5yDmkbMyTFl9AhQ5tycHMu2Y7TDlG1eQEiLDHQoAkVDEceJVmLFaEA9CYWMpFK1lwlIKQBVPomw%2Bvr3bu4cFlwcyTyOf6oTQJlfnzreeBLDWqDrCSGYa0AcAVhniRqDw56qxag9vsNuMZ5xtILaSABbyvFHUO52p5SWYNQZMAdGAm0qNJvcrBGcceo2r%2BIq6Rrq3%2FYrLM%2F%2BjzNqfspFxyR5B3lEKqkUZFpvBqD3xksdRL1lwC9Pg%2BHyEKEHJe3N9rvX7zAfIQVVqAxwIs9kX7ZIs6eN0UMqibQqSmPl%2BSEa5FM%2BH55B5%2B3iOTwcsz%2FRb8k4AbPHZC7vdiVg%3D%3D"
     class="jumbotron opacity-30 mb-5"
   />
   <section class="container pb-9 pt-3">
@@ -136,7 +136,7 @@
         <div class="row g-0 mb-8">
           <div class="col-lg-5">
             <img
-              src="https://storage.googleapis.com/vue-course-api.appspot.com/umon752/1626773728410.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=E%2F8oZdqq9%2BXoMHAXzQ42YU1bBqMv%2F272MzxChcbLQbE%2FyNaVUEiHsM9RV5cOW%2BMoJ04Zr%2FgPVKp3NRhOvTG8N3YpqBONSQf6Pm8r9%2BITngVAsdy7MFDlwoZGMKTNSZT%2BRkqRzkfjWPRRt31sfaEIoqVUZaXHzbBbchzxe2YKFh5pmXq7Y0v1vRKDWdb9e2KOzsmne4RQCVTZfP7xF2okiJE7I8LlHwCBsrOq6er5NB9ndi9Fm8DPPT8tlMh%2FcGm7TOknW5%2FpiJzQmivXUlJH2cVLOkZstZuPTILLpUNmDOtXgipLhk%2BUE1eZg1V7bhXnACOJL%2Fi1kjgohYhfQ7vVwA%3D%3D"
+              src="https://storage.googleapis.com/vue-course-api.appspot.com/umon752/1628067812283.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=mUlUCiqE0vrSdGeV2A%2FUjx8FQWktybHuO4luykIvvQZJF17sUJRj%2BYGYIbKVxS8wlw0tUrq5Dt3zm1Lu0xIdS6yv%2F3HTY%2B7fBU0RYu%2B3R9SKqve4cDigVVHo3bczt%2BkRLTIoCMuel2wpZwmUyWU%2BdNLxWNGiq0Hzur4iaxueRkDKY0pDwDjVCNTdpKqhHzzyW6dfq7Kk3FTKkUZMDcBmnEz9Hr9X3jYCD7n7LKZb1tfjZZItWQuTY0r%2B8aFcV09H0CXk6syGM6FzoPUwepM8zN0eGuY%2F00AK9iVz4gsOAx5%2F8ICjBKWFPDNrkzd0KBUJinf9TTX6djAGnaqMpF29gQ%3D%3D"
               class="img-cover w-100 h-100 opacity-50 d-none d-lg-block"
             />
           </div>
@@ -176,7 +176,7 @@
                   name="Tel"
                   placeholder="Please enter a tel"
                   :class="{ 'is-invalid': errors['Tel'] }"
-                  rules="min:8|required"
+                  rules="min:8|numeric|required"
                 />
                 <error-message
                   name="Tel"

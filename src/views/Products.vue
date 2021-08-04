@@ -87,6 +87,7 @@
                   <a href="#"
                     class="
                       products__favoriteBtn
+                      heart-fadeOut
                       material-icons
                       opacity-80
                       link
@@ -101,6 +102,7 @@
                   <a href="#"
                     class="
                       products__favoriteBtn
+                      heart-fadeOut
                       material-icons
                       opacity-80
                       link

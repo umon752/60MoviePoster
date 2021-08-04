@@ -91,7 +91,7 @@
                 name="Tel"
                 placeholder="Please enter a tel"
                 :class="{ 'is-invalid': errors['Tel'] }"
-                rules="min:8|required"
+                rules="min:8|numeric|required"
                 v-model.trim="orderData.data.user.tel"
               />
               <error-message
