@@ -50,7 +50,7 @@
           </h4>
           <a
             href="#"
-            class="material-icons heart-fadeOut link-primary opacity-70"
+            class="material-icons heart-fadeOut link-primary"
             @click.prevent="addFavorite(this.productData)"
             v-if="favoritesData.includes(this.productData.id)"
           >
@@ -58,7 +58,7 @@
           </a>
           <a
             href="#"
-            class="material-icons heart-fadeOut link-primary opacity-70"
+            class="material-icons heart-fadeOut link-primary"
             @click.prevent="addFavorite(this.productData)"
             v-else
           >
@@ -533,8 +533,6 @@ export default {
   },
   mounted() {
     this.getProduct(this.productRouteId);
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
     // tab 初始化
     const triggerTabList = [].slice.call(document.querySelectorAll('#myTab a'));
     triggerTabList.forEach((item) => {

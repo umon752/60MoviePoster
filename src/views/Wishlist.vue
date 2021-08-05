@@ -287,8 +287,6 @@ export default {
     this.getProducts();
     // 顯示 loading
     emitter.emit('isLoading', (this.isLoading = true));
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
   components: {
     Spinner,

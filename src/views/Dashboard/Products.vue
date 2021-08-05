@@ -275,8 +275,6 @@ export default {
     emitter.emit('isLoading', this.isLoading = true);
     // 取得產品資料
     this.getProducts();
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
   components: {
     Pagination,

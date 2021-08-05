@@ -110,8 +110,6 @@ export default {
     }, 2000);
     // 關閉 toggle panel
     this.$emit('toggleHide');
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
     // collapse 初始化
     const collapseElementList = [].slice.call(
       document.querySelectorAll('.collapse'),

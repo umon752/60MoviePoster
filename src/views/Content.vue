@@ -594,8 +594,6 @@ export default {
     setTimeout((() => {
       this.$refs.coverBtn.classList.add('opening');
     }), 1700);
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
     this.bannerFlag();
     this.bannerFlag02();
     this.hoverEffect();

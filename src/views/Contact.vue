@@ -257,8 +257,6 @@ export default {
     }, 2000);
     // 關閉 toggle panel
     this.$emit('toggleHide');
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
 };
 </script>

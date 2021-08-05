@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import emitter from '@/methods/mitt';
 
 export default {
   data() {
@@ -39,8 +38,6 @@ export default {
   },
   mounted() {
     this.orderId = this.$route.params.id;
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
 };
 </script>

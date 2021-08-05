@@ -268,8 +268,6 @@ export default {
     this.getCartsData();
     // sidebar 按鈕不可點擊
     this.$emit('sidebarBtn', false);
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
   unmounted() {
     // sidebar 恢復按鈕狀態

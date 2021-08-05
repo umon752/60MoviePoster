@@ -346,8 +346,6 @@ export default {
     // 隱藏 cart sidebar
     this.$emit('sidebarHide');
     this.$emit('getCartsData');
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
   components: {
     Spinner,

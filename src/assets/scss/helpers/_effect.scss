@@ -27,7 +27,7 @@
 }
 
 .heart-fadeOut {
-    animation: favorite 450ms linear;
+    animation: favorite 450ms linear both;
 }
 
 @keyframes favorite {

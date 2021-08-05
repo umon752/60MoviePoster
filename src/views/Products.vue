@@ -89,7 +89,6 @@
                       products__favoriteBtn
                       heart-fadeOut
                       material-icons
-                      opacity-80
                       link
                       me-2 me-xl-3
                       mb-1 mb-xl-2
@@ -104,7 +103,6 @@
                       products__favoriteBtn
                       heart-fadeOut
                       material-icons
-                      opacity-80
                       link
                       me-2 me-xl-3
                       mb-1 mb-xl-2
@@ -471,8 +469,6 @@ export default {
     this.$emit('toggleHide');
     // 取得產品資料
     this.getAllProducts();
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
     // 更新購物車資料
     this.$emit('getCartsData');
   },

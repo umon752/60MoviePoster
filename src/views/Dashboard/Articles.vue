@@ -283,8 +283,6 @@ export default {
     // 顯示 loading
     emitter.emit('isLoading', this.isLoading = true);
     this.getArticles();
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
   components: {
     Pagination,

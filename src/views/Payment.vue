@@ -200,8 +200,6 @@ export default {
     this.getOrder();
     // 清空購物車
     this.$emit('delAllCartData', []);
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
 };
 </script>

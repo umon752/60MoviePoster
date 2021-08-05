@@ -222,8 +222,6 @@ export default {
     setTimeout((() => {
       emitter.emit('isOpening', this.isOpening = true);
     }), 1300);
-    // Firefox Material-icons 置中
-    emitter.emit('firefoxIcon');
   },
 };
 </script>
