@@ -228,7 +228,8 @@ export default {
     return {
       editor: ClassicEditor,
       editorConfig: {
-        toolbar: ['heading', 'bold', 'italic', '|', 'link'],
+        toolbar: ['heading', '|', 'bold', 'italic', '|', 'bulletedList', 'numberedList'],
+
       },
       tempArticle: {},
       create_at: '',

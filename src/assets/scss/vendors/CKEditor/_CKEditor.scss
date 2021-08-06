@@ -28,3 +28,8 @@
 .ck.ck-button.ck-on, a.ck.ck-button.ck-on {
     background: $secondary-dark !important;
 }
+
+.ck-content ul {
+    list-style-type: disc;
+    padding-left: 2rem;
+}

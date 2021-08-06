@@ -28,7 +28,7 @@
                 class="accordion-collapse collapse"
                 :aria-labelledby="item.id"
               >
-                <div class="accordion-body text-break fs-5 fs-md-4"
+                <div class="accordion-body article text-break fs-5 fs-md-4"
                 v-html="item.content">
                 </div>
               </div>
@@ -83,12 +83,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.articlesData[index].content = res.data.article.content;
-            // content 的 ul 標籤加上 .list-disc、.ms-5
-            const contentList = document.querySelector('.accordion-body ul');
-            if (contentList) {
-              contentList.classList.add('list-disc');
-              contentList.classList.add('ms-5');
-            }
           } else {
           // 顯示訊息
             this.$alertState(res.data.success, 'Get article');
@@ -116,8 +110,6 @@ export default {
     );
     this.collapse = collapseElementList.map(
       (collapseEl) => new Collapse(collapseEl, {
-        // parent: document.getElementById('selector'),
-        // parent: true,
       }),
     );
     // 取得文章列表
