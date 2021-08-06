@@ -43,7 +43,6 @@ export default {
   unmounted() {
     this.emitter.off('isLoading');
     this.emitter.off('isOpening');
-    this.emitter.off('firefoxIcon');
   },
 };
 </script>
