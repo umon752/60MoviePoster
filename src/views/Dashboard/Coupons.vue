@@ -160,8 +160,9 @@ export default {
           // 隱藏 loading
           emitter.emit('isLoading', this.isLoading = false);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     openModal(state, item) {
@@ -201,8 +202,9 @@ export default {
           this.isSpinner = false;
           this.$refs.delModal.closeModal();
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     updateEnabledState(item) {
@@ -226,8 +228,9 @@ export default {
             this.$alertState(res.data.success, 'Update enabled state');
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     updateCoupon(item, modalTitle) {
@@ -262,13 +265,15 @@ export default {
               }
               this.isSpinner = false;
             })
-            .catch((error) => {
-              console.log(error);
+            .catch(() => {
+              // 顯示訊息
+              this.$alertState('error');
             });
         }
       })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
   },

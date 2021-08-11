@@ -147,8 +147,9 @@ export default {
           // 隱藏 loading
           emitter.emit('isLoading', this.isLoading = false);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     openModal(state, item) {
@@ -189,8 +190,9 @@ export default {
           this.isSpinner = false;
           this.$refs.delModal.closeModal();
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     UpdatePaidState(item) {
@@ -214,8 +216,9 @@ export default {
             this.$alertState(res.data.success, 'Update paid state');
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
   },

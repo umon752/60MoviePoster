@@ -345,6 +345,7 @@ export default {
       this.$emit('getCartsData');
     },
     cartsData() {
+      this.getProduct(this.productRouteId);
       this.cartsData.carts.forEach((item) => {
         // 購物車有此商品則庫存數以購物車為主
         if (item.product_id === this.productRouteId) {
@@ -370,17 +371,21 @@ export default {
   inject: ['emitter', '$alertState'],
   emits: ['sidebarShow', 'sidebarHide', 'getCartsData', 'addFavorite'],
   methods: {
-    getProduct(id) {
+    getProduct(id, isInit) {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${id}`;
-      // 顯示 loading
-      emitter.emit('isLoading', (this.isLoading = true));
+      if (isInit) {
+        // 顯示 loading
+        emitter.emit('isLoading', (this.isLoading = true));
+      }
       this.$http
         .get(url)
         .then((res) => {
           if (res.data.success) {
             this.productData = res.data.product;
+            if (isInit) {
             // 關閉 cart
-            this.$emit('sidebarHide');
+              this.$emit('sidebarHide');
+            }
             this.getAllProducts();
             // 商品沒有在購物車內，庫存量以商品資料為主
             const cart = this.cartsData.carts;
@@ -392,8 +397,9 @@ export default {
           // 隱藏 loading
           emitter.emit('isLoading', (this.isLoading = false));
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     getAllProducts() {
@@ -409,8 +415,9 @@ export default {
             this.$alertState(res.data.success, 'Get products');
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     getRelatedProducts() {
@@ -513,8 +520,9 @@ export default {
           // 隱藏 spinner
           this.isSpinner = false;
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     addQty() {
@@ -532,7 +540,7 @@ export default {
     },
   },
   mounted() {
-    this.getProduct(this.productRouteId);
+    this.getProduct(this.productRouteId, true);
     // tab 初始化
     const triggerTabList = [].slice.call(document.querySelectorAll('#myTab a'));
     triggerTabList.forEach((item) => {

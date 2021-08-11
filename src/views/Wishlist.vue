@@ -180,7 +180,6 @@ export default {
       tempFavoritesData: [],
       productsData: [],
       isSpinner: false,
-      // inStock: '',
     };
   },
   inject: ['emitter', '$alertState'],
@@ -204,6 +203,7 @@ export default {
       this.tempFavoritesData = this.favoritesData;
     },
     cartsData() {
+      this.getProducts();
       this.cartsData.carts.forEach((value) => {
         this.productsData.forEach((item) => {
         // 購物車有此商品則庫存數以購物車為主
@@ -243,8 +243,9 @@ export default {
           // 隱藏 loading
           emitter.emit('isLoading', (this.isLoading = false));
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     addCart(id, qty = 1) {
@@ -273,8 +274,9 @@ export default {
           // 隱藏 spinner
           this.isSpinner = false;
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     delFavorite(id, index) {

@@ -240,9 +240,9 @@
                   </a>
                 </li>
               </ul>
-              <p class="text-secondary fs-5 opacity-80">練習作品非商業用途</p>
+              <p class="text-secondary fs-5 opacity-80">本網站為個人作品使用，非商業用途</p>
               <p class="text-secondary fs-5 opacity-80">
-                資訊來源：Google、Wikipedia、Unsplash
+                資料來源：Google、Wikipedia、Unsplash
               </p>
             </div>
           </div>
@@ -455,8 +455,9 @@ export default {
           }
           emitter.emit('isLoading', this.isLoading = false);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     updateCart(qty, item, index) {
@@ -487,8 +488,9 @@ export default {
               this.$alertState(res.data.success, 'Update shopping cart');
             }
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
+            // 顯示訊息
+            this.$alertState('error');
           });
       }
     },
@@ -507,8 +509,9 @@ export default {
           }
           // 隱藏 spinner
           this.isSpinner = false;
-        }).catch((error) => {
-          console.log(error);
+        }).catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     delAllCartData(item) {

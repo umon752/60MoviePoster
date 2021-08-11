@@ -699,8 +699,9 @@ export default {
           }
           this.innerSpinner = false;
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     categorySelect(value) {

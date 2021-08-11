@@ -170,8 +170,9 @@ export default {
           // 隱藏 loading
           emitter.emit('isLoading', (this.isLoading = false));
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     payment(id) {
@@ -191,8 +192,9 @@ export default {
           // 隱藏 loading
           emitter.emit('isLoading', (this.isLoading = false));
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
   },

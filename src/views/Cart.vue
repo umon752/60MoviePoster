@@ -306,8 +306,9 @@ export default {
             this.isSpinner = false;
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     updateCart(qty, item) {

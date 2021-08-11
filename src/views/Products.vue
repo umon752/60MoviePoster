@@ -262,8 +262,9 @@ export default {
           // 隱藏 loading
           emitter.emit('isLoading', this.isLoading = false);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
         });
     },
     filterPage(currentPage = 1) {
@@ -417,7 +418,31 @@ export default {
       this.$refs.select.value = 'Default';
       this.filterPage();
     },
+    getProduct(id) {
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/product/${id}`;
+      this.$http
+        .get(url)
+        .then((res) => {
+          if (res.data.success) {
+            // this.productData = res.data.product;
+            // this.getAllProducts();
+            // 商品沒有在購物車內，庫存量以商品資料為主
+            this.inStock = res.data.product.inStock;
+            // const cart = this.cartsData.carts;
+            // const isInclude = cart.every((item) => item.product_id !== id);
+            // if (isInclude) {
+
+            // }
+          }
+        })
+        .catch(() => {
+          // 顯示訊息
+          this.$alertState('error');
+        });
+    },
     addCart(id, qty = 1) {
+      // 取得商品的庫存數
+      this.getProduct(id);
       // 當前商品庫存量
       this.cartsData.carts.forEach((item) => {
         if (item.product_id === id) {
@@ -450,8 +475,9 @@ export default {
             // 隱藏 spinner
             this.isSpinner = false;
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
+            // 顯示訊息
+            this.$alertState('error');
           });
       } else {
         // 顯示訊息
