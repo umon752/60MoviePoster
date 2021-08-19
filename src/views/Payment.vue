@@ -74,7 +74,7 @@
                     align-items-center
                   "
                 >
-                  <span>{{ item.product.num }}</span>
+                  <span>{{ item.qty }}</span>
                 </li>
                 <li
                   class="
@@ -117,7 +117,7 @@
           </ul>
           <div class="d-flex flex-column flex-md-row justify-content-center">
             <button
-              type="button"
+            type="button"
               class="
                 btn btn-secondary
                 text-white
@@ -125,6 +125,7 @@
                 me-3
                 mb-3 mb-md-0
               "
+              @click="openCheckModal"
             >
               CANCEL ORDER
             </button>
@@ -140,15 +141,60 @@
       </div>
     </div>
   </section>
+  <!-- check modal -->
+<div
+    ref="checkModal"
+    class="modal fade"
+    id="check"
+    tabindex="-1"
+    aria-labelledby="checkLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title title fs-3" id="checkLabel">
+            CANCEL ORDER
+          </h3>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-break mb-1">
+            Do you want to cancel this order?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-sm btn-primary d-flex"
+            @click="cancelOrder"
+          >
+            <Spinner v-if="isSpinner" />
+            CANCEL ORDER
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import emitter from '@/methods/mitt';
+import Modal from 'bootstrap/js/dist/modal';
+import Spinner from '@/components/Spinner.vue';
 
 export default {
+  inheritAttrs: false,
   data() {
     return {
       orderData: {},
+      checkModal: '',
+      isSpinner: false,
     };
   },
   emits: ['delAllCartData'],
@@ -197,11 +243,26 @@ export default {
           this.$alertState('error');
         });
     },
+    openCheckModal() {
+      this.checkModal.show();
+    },
+    cancelOrder() {
+      this.isSpinner = true;
+      // 轉址到首頁
+      this.$router.push('/');
+      // 關閉 modal
+      this.checkModal.hide();
+    },
   },
   mounted() {
     this.getOrder();
+    // modal 初始化
+    this.checkModal = new Modal(this.$refs.checkModal);
     // 清空購物車
     this.$emit('delAllCartData', []);
+  },
+  components: {
+    Spinner,
   },
 };
 </script>

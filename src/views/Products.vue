@@ -424,15 +424,8 @@ export default {
         .get(url)
         .then((res) => {
           if (res.data.success) {
-            // this.productData = res.data.product;
-            // this.getAllProducts();
             // 商品沒有在購物車內，庫存量以商品資料為主
             this.inStock = res.data.product.inStock;
-            // const cart = this.cartsData.carts;
-            // const isInclude = cart.every((item) => item.product_id !== id);
-            // if (isInclude) {
-
-            // }
           }
         })
         .catch(() => {
