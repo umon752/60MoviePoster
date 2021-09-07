@@ -587,7 +587,6 @@ export default {
     setTimeout((() => {
       this.$refs.banner.classList.add('opening');
       this.$refs.coverImg.classList.add('opening');
-      this.$refs.coverImg.classList.add('flashing');
     }), 1200);
     setTimeout((() => {
       this.$refs.coverIntro.classList.add('opening');

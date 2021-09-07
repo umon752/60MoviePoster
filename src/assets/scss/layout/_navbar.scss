@@ -20,10 +20,18 @@
 
     &__6 {
         transform: translateX(4px);
+        width: 22px;
+        @include media-breakpoint-up(md) {
+            width: auto;
+        }
     }
 
     &__0 {
         @include linear;
+        width: 32px;
+        @include media-breakpoint-up(md) {
+            width: auto;
+        }
     }
 
     &__text {
